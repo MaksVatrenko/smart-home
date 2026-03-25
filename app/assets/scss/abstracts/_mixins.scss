@@ -1,0 +1,71 @@
+@use 'sass:math';
+@use './variables' as *;
+
+@mixin adaptive-value(
+  $property,
+  $start-size,
+  $min-size: $font-size-default,
+  $keep-size: 0,
+  $width-from: $container-width,
+  $width-to: $min-width
+) {
+  @if $start-size == 0 {
+    $start-size: 0.000001;
+  }
+
+  @if $min-size == 0 {
+    $min-size: 0.000001;
+  }
+
+  @if $width-from == $container-width and $max-width-container == 0 {
+    $width-from: $max-width;
+  }
+
+  // breakpoints in EM
+  $width-from-media: em($width-from);
+  $width-to-media: em($width-to);
+
+  // Formula for the floating value
+  // Source: https://css-tricks.com/linearly-scale-font-size-with-css-clamp-based-on-the-viewport/
+  $slope: math.div(($start-size - $min-size), ($width-from - $width-to));
+  $y-intersection: -$width-to * $slope + $min-size;
+
+  @if $y-intersection == 0 {
+    $y-intersection: 0.000001;
+  }
+
+  $fly-value: #{$y-intersection}px ' + ' #{$slope * 100}vw;
+
+  // Getting the property value
+  $property-value: #{'clamp(' #{$min-size}px ',' $fly-value ',' #{$start-size}px
+    ')'};
+
+  // If negative values
+  @if $min-size > $start-size {
+    $property-value: #{'clamp('
+      #{$start-size}px
+      ','
+      $fly-value
+      ','
+      #{$min-size}px
+      ')'};
+  }
+
+  // Set default values
+  @if $keep-size != 1 and $keep-size != 3 {
+    @media (min-width: $width-from-media) {
+      #{$property}: #{$start-size}px;
+    }
+  }
+
+  // Adapt the size in the range between the specified viewport widths
+  @media (min-width: $width-to-media) and (max-width: $width-from-media) {
+    #{$property}: $property-value;
+  }
+
+  @if $keep-size != 1 and $keep-size != 2 {
+    @media (max-width: $width-to-media) {
+      #{$property}: #{$min-size}px;
+    }
+  }
+}

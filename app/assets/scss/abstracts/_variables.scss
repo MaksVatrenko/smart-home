@@ -1,0 +1,39 @@
+// # font
+$font-family: 'Manrope';
+
+// # colors
+$color-accent: #ff6b6b;
+$color-white: #fff;
+$color-black: #000;
+
+// # breakpoints
+$mobile: 767px;
+$tablet: 1279px;
+$desktop: 1440px;
+
+// # gradients
+
+// # paths
+$fonts-path: '/fonts';
+$images-path: '/images';
+
+// # timing
+$time-faster: 100ms;
+$time-fast: 200ms;
+$time-normal: 300ms;
+$time-slow: 400ms;
+$time-slower: 500ms;
+
+// # template settings
+$min-width: 320; // minimum page width
+$max-width: 1920; // canvas (layout) width
+$max-width-container: 1420; // width of the limiting container
+$font-size-default: 16; // default adaptive values
+
+// General container padding
+// (30 = 15px on the left and right, 0 = no padding)
+$container-padding: 30;
+
+// Width for the first breakpoint trigger
+$container-width: $max-width-container + $container-padding;
+$header-height: 150;

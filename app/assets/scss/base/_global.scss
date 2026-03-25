@@ -1,0 +1,16 @@
+@use '../abstracts' as *;
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-family;
+  font-size: #{$font-size-default}px;
+  color: $color-black;
+}

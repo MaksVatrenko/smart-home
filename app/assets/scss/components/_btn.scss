@@ -1,0 +1,9 @@
+@use '../abstracts' as *;
+
+.button {
+  $self: &;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

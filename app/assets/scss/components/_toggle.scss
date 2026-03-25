@@ -1,0 +1,38 @@
+@use '../abstracts' as *;
+
+.toggle {
+  padding: em(20);
+  border-radius: em(15);
+  box-shadow: 0 0 20px rgb(0 0 0 / 14%);
+
+  &__heading {
+    display: flex;
+    gap: em(10);
+    align-items: center;
+  }
+
+  &__content {
+    padding-top: em(30);
+  }
+
+  @media (max-width: $mobile) {
+    padding: em(10);
+
+    &__heading {
+      gap: em(6);
+    }
+
+    &__content {
+      padding-top: em(10);
+    }
+  }
+}
+
+.toggle-heading {
+}
+
+.toggle-content {
+  display: flex;
+  flex-direction: column;
+  gap: em(10);
+}

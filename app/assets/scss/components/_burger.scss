@@ -1,0 +1,54 @@
+@use '../abstracts' as *;
+
+.burger {
+  position: relative;
+  z-index: 2;
+  width: em(36);
+  height: em(18);
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+
+  &__active {
+    margin-left: auto;
+    background-color: transparent;
+  }
+
+  &__span {
+    position: absolute;
+    left: 50%;
+    display: block;
+    width: 100%;
+    height: em(2);
+    background-color: $color-black;
+    transform: translateX(-50%);
+    transition: all 0.3s ease-in-out;
+
+    &--top {
+      top: 0;
+    }
+
+    &--middle {
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &--bottom {
+      bottom: 0;
+    }
+
+    &--transformX {
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &--transformM {
+      position: relative;
+      width: 0;
+    }
+
+    &--transformY {
+      bottom: calc(50% - #{em(2)});
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+}
