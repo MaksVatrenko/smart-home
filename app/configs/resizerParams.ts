@@ -33,9 +33,15 @@ export interface ResizerConfig {
 const resizerParams: Record<string, ResizerConfig> = {
   mobile: {
     name: 'mobile',
-    width: 320,
+    width: 375,
     fontSize: 16,
     maxWidth: 767
+  },
+  tablet: {
+    name: 'tablet',
+    width: 768,
+    fontSize: 16,
+    maxWidth: 1439
   },
   desktop: {
     name: 'desktop',

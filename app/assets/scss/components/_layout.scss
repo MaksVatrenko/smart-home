@@ -18,6 +18,16 @@
   }
 
   &__footer {
+    align-self: center;
+    max-width: em(375);
+    width: 100%;
+    height: em(80);
+    box-shadow: 180px -3px 84px 0 rgba(#3261FF, 0.51), -93px -4px 78px 0 rgba(#5A33FF, 0.42);
+    border-radius: em(50) em(50) 0 0;
+    border: 1px solid transparent;
+    background:
+      linear-gradient($color-black-10, $color-black-10) padding-box,
+      linear-gradient(180deg, rgba(191, 140, 255, 0.33), rgba(0, 0, 0, 0)) border-box;
   }
 
   &__page {

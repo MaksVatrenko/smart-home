@@ -1,10 +1,11 @@
 // # font
-$font-family: 'Manrope';
+$font-family: 'Inter';
 
 // # colors
 $color-accent: #ff6b6b;
 $color-white: #fff;
 $color-black: #000;
+$color-black-10: #16171B;
 
 // # breakpoints
 $mobile: 767px;
@@ -26,13 +27,13 @@ $time-slower: 500ms;
 
 // # template settings
 $min-width: 320; // minimum page width
-$max-width: 1920; // canvas (layout) width
-$max-width-container: 1420; // width of the limiting container
+$max-width: 375; // canvas (layout) width
+$max-width-container: 351; // width of the limiting container
 $font-size-default: 16; // default adaptive values
 
 // General container padding
 // (30 = 15px on the left and right, 0 = no padding)
-$container-padding: 30;
+$container-padding: 24;
 
 // Width for the first breakpoint trigger
 $container-width: $max-width-container + $container-padding;
