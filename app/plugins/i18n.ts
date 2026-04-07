@@ -1,9 +1,9 @@
 import { createI18n } from 'vue-i18n'
 import en from '@/locales/en.json'
-import ru from '@/locales/ru.json'
+import ua from '@/locales/ua.json'
 
 export const locales = {
-  ru: { name: 'Русский', code: 'ru' },
+  ua: { name: 'Українська', code: 'ua' },
   en: { name: 'English', code: 'en' }
 }
 
@@ -12,7 +12,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     legacy: false,
     locale: 'en',
     fallbackLocale: 'en',
-    messages: { ru, en }
+    messages: { ua, en }
   })
   nuxtApp.vueApp.use(i18n)
 })

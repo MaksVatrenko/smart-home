@@ -6,15 +6,27 @@
     flex-direction: column;
     min-height: 100vh;
     margin: 0 auto;
+    position: relative;
+  }
+  
+  &__blur {
+    position: absolute;
+    z-index: -1;
+    transform: translate(-50%, -50%);
+    width: em(178);
+    height: em(178);
+    background: rgba(#1371FF, 0.23);
+    border-radius: 50%;
+    filter: blur(em(63));
+  }
+  
+  &__header {
+    margin-bottom: em(30);
   }
 
   &__main {
     display: flex;
     flex: 1 1 auto;
-  }
-
-  &__header {
-    margin-bottom: em(30);
   }
 
   &__footer {

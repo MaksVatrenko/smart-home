@@ -1,3 +1,16 @@
 {
-  "helloWorld": "Hello World!"
+  "hi": "Hi",
+  "welcome": "Welcome to Home",
+  "weather": {
+    "cloud": "Cloud",
+    "sun-behind-cloud": "Sunny Cloud",
+    "cloud-with-rain": "Rain Cloud",
+    "sun-behind-rain-cloud": "Sun Rain",
+    "cloud-with-lightning": "Storm Cloud",
+    "cloud-with-lightning-and-rain": "Storm Rain",
+    "cloud-with-snow": "Snow Cloud",
+    "sun": "Sun"
+  },
+  "tempOutside": "Temp Outside",
+  "tempInside": "Temp Inside"
 }

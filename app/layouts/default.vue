@@ -1,6 +1,7 @@
 <template>
   <div class="layout">
     <LayoutResize class="layout__resize">
+      <div class="layout__blur" />
       <!-- Skip to main content link for keyboard users -->
       <a href="/" class="skip-link">Skip to main content</a>
 

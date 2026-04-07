@@ -96,6 +96,7 @@ const navItems: NavItem[] = [
       content: '';
       display: block;
       opacity: 0;
+      transition: opacity 0.3s ease;
       width: em(8);
       height: em(8);
       border-radius: 50%;
