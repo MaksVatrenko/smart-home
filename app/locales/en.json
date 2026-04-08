@@ -12,5 +12,7 @@
     "sun": "Sun"
   },
   "tempOutside": "Temp Outside",
-  "tempInside": "Temp Inside"
+  "tempInside": "Temp Inside",
+  "bedroom": "Bedroom",
+  "bathroom": "Bathroom"
 }
