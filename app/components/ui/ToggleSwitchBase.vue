@@ -45,7 +45,7 @@ function toggle() {
   height: em(30);
   padding: em(3);
   cursor: pointer;
-  background: #d1d5db;
+  background: rgba(35, 37, 50, 1);
   border: none;
   border-radius: em(30);
   transition: background 0.25s ease;
@@ -53,7 +53,7 @@ function toggle() {
   &__slider {
     width: em(24);
     height: em(24);
-    background: white;
+    background: linear-gradient(to right, #354269, #3b3163);
     border-radius: 50%;
     box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
     transform: translateX(0);
@@ -61,9 +61,8 @@ function toggle() {
   }
 
   &--on {
-    background: $color-accent;
-
     .toggle__slider {
+      background: linear-gradient(to right, #3161fe, #5a31fe);
       transform: translateX(em(20));
     }
   }

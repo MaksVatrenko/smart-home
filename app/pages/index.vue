@@ -114,7 +114,7 @@ const avatar =
 const weather: Weather = {
   tempOutside: 28,
   tempIndoor: 18,
-  condition: 'sun-behind-cloud'
+  condition: 'cloud-with-rain'
 }
 const slides = ref<Slide[]>([
   {
