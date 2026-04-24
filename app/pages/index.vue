@@ -109,8 +109,8 @@ type Slide = {
 }
 
 const name = 'Alina'
-const avatar =
-  'https://instagram.fkiv9-1.fna.fbcdn.net/v/t51.82787-15/619334815_18074341892615625_5174968488304016953_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ig_cache_key=MjcwNTMyNzEzMjc2NDA2Njk2Mw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTgwMC5zZHIuQzMifQ%3D%3D&_nc_ohc=xsLSGmFKEQUQ7kNvwFp8EcO&_nc_oc=AdqusctNg7_lyyD0wCt0_DGSBkJ55uPM2_ssbm7Nd-3hfaV0g2vECJTiY2jDs37z97s&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fkiv9-1.fna&_nc_gid=BRsMc8QR1kTf-d1XUooMHA&_nc_ss=7a32e&oh=00_Af1g_dN8ME6SFfp3Nv9HV-agJLSROCOBtTRDe0bH_2huaw&oe=69D57F39'
+const avatar = 'https://cdn-icons-png.flaticon.com/512/147/147285.png'
+
 const weather: Weather = {
   tempOutside: 28,
   tempIndoor: 18,

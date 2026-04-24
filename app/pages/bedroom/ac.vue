@@ -1,13 +1,11 @@
 <template>
   <div class="page">
-    <AirConditioner class="page__conditioner" />
+    <AirConditioner class="page__conditioner" room="bedroom" />
   </div>
 </template>
 
 <script setup lang="ts">
 import AirConditioner from '~/components/AirConditioner.vue'
-
-const temperature = ref(12)
 </script>
 
 <style scoped lang="scss">

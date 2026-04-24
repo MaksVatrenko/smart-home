@@ -7,11 +7,11 @@
     :aria-checked="model"
     @click="toggle"
   >
-    <span class="toggle__text">OFF</span>
+    <span class="toggle__text">UA</span>
 
     <span class="toggle__slider" />
 
-    <span class="toggle__text">ON</span>
+    <span class="toggle__text">EN</span>
   </button>
 </template>
 
@@ -30,16 +30,18 @@ function toggle() {
 </script>
 
 <style scoped lang="scss">
+$width: 86;
+
 .toggle {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: em(106);
+  width: em($width);
   height: em(34);
   padding: 0 em(12);
   cursor: pointer;
-  background: $color-white;
+  background: $color-black-10;
   border: none;
   border-radius: em(20);
   box-shadow: 4px 4px 6px 0 rgb(0 35 104 / 19%);
@@ -48,9 +50,9 @@ function toggle() {
   &__slider {
     position: absolute;
     left: em(3);
-    width: em(50);
+    width: em($width/2);
     height: calc(100% - #{em(6)});
-    background: grey;
+    background: $color-black-10;
     border-radius: em(40);
     transition:
       transform 0.3s ease,
@@ -61,20 +63,34 @@ function toggle() {
     position: relative;
     z-index: 1;
     font-size: em(12);
-    color: $color-black;
+    color: $color-white;
     transition: color 0.3s ease;
   }
 
   &--on {
-    background: yellowgreen;
+    //    background: yellowgreen;
 
     .toggle__slider {
-      background: $color-accent;
-      transform: translateX(em(50));
+      background: rgba(156, 140, 255, 0.24);
+      transform: translateX(em($width/2-6));
+    }
+
+    .toggle__text:first-child {
+      color: $color-white;
     }
 
     .toggle__text:last-child {
       color: white;
+    }
+  }
+
+  &:not(.toggle--on) {
+    .toggle__text:first-child {
+      color: white;
+    }
+
+    .toggle__slider {
+      background: rgba(156, 140, 255, 0.24);
     }
   }
 }

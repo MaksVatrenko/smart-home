@@ -8,11 +8,25 @@ export const locales = {
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
+  let locale = 'en'
+
+  if (import.meta.client) {
+    const saved = localStorage.getItem('locale')
+    if (saved) locale = saved
+  }
+
   const i18n = createI18n({
     legacy: false,
-    locale: 'en',
+    locale,
     fallbackLocale: 'en',
     messages: { ua, en }
   })
+
+  if (import.meta.client) {
+    watch(i18n.global.locale, (val) => {
+      localStorage.setItem('locale', val)
+    })
+  }
+
   nuxtApp.vueApp.use(i18n)
 })

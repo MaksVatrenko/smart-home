@@ -8,18 +8,18 @@
     margin: 0 auto;
     position: relative;
   }
-  
+
   &__blur {
     position: absolute;
     z-index: -1;
     transform: translate(-50%, -50%);
     width: em(178);
     height: em(178);
-    background: rgba(#1371FF, 0.23);
+    background: rgba(#1371ff, 0.23);
     border-radius: 50%;
     filter: blur(em(63));
   }
-  
+
   &__header {
     margin-bottom: em(30);
   }
@@ -35,12 +35,15 @@
     max-width: em(375);
     width: 100%;
     height: em(80);
-    box-shadow: 180px -3px 84px 0 rgba(#3261FF, 0.51), -93px -4px 78px 0 rgba(#5A33FF, 0.42);
+    box-shadow:
+      180px -3px 84px 0 rgba(#3261ff, 0.51),
+      -93px -4px 78px 0 rgba(#5a33ff, 0.42);
     border-radius: em(50) em(50) 0 0;
     border: 1px solid transparent;
     background:
       linear-gradient($color-black-10, $color-black-10) padding-box,
-      linear-gradient(180deg, rgba(191, 140, 255, 0.33), rgba(0, 0, 0, 0)) border-box;
+      linear-gradient(180deg, rgba(191, 140, 255, 0.33), rgba(0, 0, 0, 0))
+        border-box;
   }
 
   &__page {

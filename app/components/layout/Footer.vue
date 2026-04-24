@@ -19,7 +19,7 @@
                 :name="item.icon"
               />
               <span v-if="route.path === item.href">
-                {{ item.label }}
+                {{ t(item.label) }}
               </span>
             </NuxtLink>
           </li>
@@ -31,7 +31,9 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 
 type NavItem = {
@@ -43,22 +45,22 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     icon: 'fluent:home-32-regular',
-    label: 'Home',
+    label: 'home',
     href: '/'
   },
-  {
-    icon: 'tabler:users',
-    label: 'Users',
-    href: '/users'
-  },
-  {
-    icon: 'solar:shop-2-linear',
-    label: 'Shop',
-    href: '/shop'
-  },
+  // {
+  //   icon: 'tabler:users',
+  //   label: 'Users',
+  //   href: '/users'
+  // },
+  // {
+  //   icon: 'solar:shop-2-linear',
+  //   label: 'Shop',
+  //   href: '/shop'
+  // },
   {
     icon: 'lucide:settings',
-    label: 'Settings',
+    label: 'settings',
     href: '/settings'
   }
 ]

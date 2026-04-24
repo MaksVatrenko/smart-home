@@ -4,14 +4,14 @@
       <div class="conditioner__column">
         <span class="conditioner__font conditioner__font--title">Turbo Ac</span>
         <span class="conditioner__font conditioner__font--subtitle">
-          Bedroom
+          {{ t(`${props.room}`) }}
         </span>
       </div>
       <button
         class="conditioner__btn conditioner__btn--circle"
-        :class="{ 'conditioner__btn--active': acIsActive }"
+        :class="{ 'conditioner__btn--active': currentAC.isActive }"
         type="button"
-        @click="toggleAc"
+        @click="acStore.toggleAC(props.room)"
       >
         <Icon
           class="conditioner__icon conditioner__icon--power"
@@ -21,18 +21,19 @@
     </div>
     <div class="conditioner__controls">
       <div
-        v-for="(control, index) in controls"
+        v-for="control in controls"
         :key="control.label"
         class="conditioner__column conditioner__column--center"
       >
         <button
           class="conditioner__btn conditioner__btn--square"
           :class="{
-            'conditioner__btn--active': control.isActive && acIsActive,
-            'conditioner__btn--disabled': !acIsActive
+            'conditioner__btn--active':
+              control.mode === currentAC.mode && currentAC.isActive,
+            'conditioner__btn--disabled': !currentAC.isActive
           }"
           type="button"
-          @click="toggleControl(index)"
+          @click="setMode(control.mode)"
         >
           <Icon
             class="conditioner__icon conditioner__icon--control"
@@ -40,13 +41,13 @@
           />
         </button>
         <span class="conditioner__font conditioner__font--control">
-          {{ control.label }}
+          {{ t(control.label) }}
         </span>
       </div>
     </div>
     <div
       class="conditioner__ac ac"
-      :class="{ 'conditioner__ac--disabled': !acIsActive }"
+      :class="{ 'conditioner__ac--disabled': !currentAC.isActive }"
     >
       <div class="ac__stick" />
       <div class="ac__stick" />
@@ -56,7 +57,7 @@
       <div class="ac__circle" />
       <div
         class="ac__indicator"
-        :class="{ 'ac__indicator--disabled': !acIsActive }"
+        :class="{ 'ac__indicator--disabled': !currentAC.isActive }"
       />
       <UiCircleProgress v-model="temperature" :min="16" :max="30" />
       <div class="ac__temp">
@@ -69,7 +70,7 @@
     <div class="conditioner__grid">
       <div class="conditioner__block block block--column">
         <span class="conditioner__font conditioner__font--block-1">
-          Temp Indoor
+          {{ t('tempIndoor') }}
         </span>
         <span>
           <span class="conditioner__font conditioner__font--block-2">18</span>
@@ -80,7 +81,7 @@
       </div>
       <div class="conditioner__block block block--column">
         <span class="conditioner__font conditioner__font--block-1">
-          Temp Out
+          {{ t('tempOut') }}
         </span>
         <span>
           <span class="conditioner__font conditioner__font--block-2">30</span>
@@ -91,20 +92,22 @@
       </div>
       <div class="conditioner__block block block--column">
         <span class="conditioner__font conditioner__font--block-1">
-          Wind Speed
+          {{ t('windSpeed') }}
         </span>
         <span>
           <span class="conditioner__font conditioner__font--block-2">2</span>
           <span class="conditioner__font conditioner__font--block-3">
-            Grade
+            {{ t('grade') }}
           </span>
         </span>
       </div>
       <div class="conditioner__block block block--row">
         <div class="block__column">
-          <span class="conditioner__font conditioner__font--block-2">Fan</span>
+          <span class="conditioner__font conditioner__font--block-2">
+            {{ t('fan') }}
+          </span>
           <span class="conditioner__font conditioner__font--block-3">
-            {{ fanIsActive ? 'On' : 'Off' }}
+            {{ fanIsActive ? t('on') : t('off') }}
           </span>
         </div>
         <UiToggleSwitchBase v-model="fanIsActive" />
@@ -112,10 +115,10 @@
       <div class="conditioner__block block block--row">
         <div class="block__column">
           <span class="conditioner__font conditioner__font--block-2">
-            Cooler
+            {{ t('cooler') }}
           </span>
           <span class="conditioner__font conditioner__font--block-3">
-            {{ coolerIsActive ? 'On' : 'Off' }}
+            {{ coolerIsActive ? t('on') : t('off') }}
           </span>
         </div>
         <UiToggleSwitchBase v-model="coolerIsActive" />
@@ -125,46 +128,70 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+import { useACStore, type ACMode } from '@/stores/ac'
+
+const props = defineProps<{
+  room: 'bathroom' | 'bedroom'
+}>()
+
+const acStore = useACStore()
+const { t } = useI18n()
+
+const currentAC = computed(() => acStore[props.room])
+
 type Control = {
-  isActive: boolean
+  mode: ACMode
   icon: string
   label: string
 }
-const acIsActive = ref(false)
-const fanIsActive = ref(false)
-const coolerIsActive = ref(false)
-const temperature = ref(18)
+
+const temperature = computed({
+  get: () => currentAC.value.temperature,
+  set: (val: number) => {
+    acStore.setACField(props.room, 'temperature', val)
+  }
+})
+
+const fanIsActive = computed({
+  get: () => currentAC.value.fanIsActive,
+  set: (val: boolean) => {
+    acStore.setACField(props.room, 'fanIsActive', val)
+  }
+})
+
+const coolerIsActive = computed({
+  get: () => currentAC.value.coolerIsActive,
+  set: (val: boolean) => {
+    acStore.setACField(props.room, 'coolerIsActive', val)
+  }
+})
+
 const controls = ref<Control[]>([
   {
-    isActive: false,
+    mode: 'cool',
     icon: 'gravity-ui:snowflake',
-    label: 'Cool'
+    label: 'cool'
   },
   {
-    isActive: false,
+    mode: 'heat',
     icon: 'material-symbols:heat',
-    label: 'Heat'
+    label: 'heat'
   },
   {
-    isActive: false,
+    mode: 'wind',
     icon: 'tabler:windmill',
-    label: 'Wind'
+    label: 'wind'
   },
   {
-    isActive: false,
+    mode: 'auto',
     icon: 'iconamoon:playlist-repeat-list-fill',
-    label: 'Auto'
+    label: 'auto'
   }
 ])
 
-const toggleControl = (index: number) => {
-  controls.value.forEach((control, i) => {
-    control.isActive = i === index ? !control.isActive : false
-  })
-}
-
-const toggleAc = () => {
-  acIsActive.value = !acIsActive.value
+const setMode = (mode: ACMode) => {
+  acStore.setMode(props.room, mode)
 }
 </script>
 
@@ -452,7 +479,7 @@ const toggleAc = () => {
 
   &__font {
     &--temp {
-      font-size: em(46);
+      font-size: 46px;
       font-weight: bold;
     }
 
@@ -461,17 +488,17 @@ const toggleAc = () => {
       top: em(-10);
       right: em(-16);
       color: rgba(#ffffff, 0.5);
-      font-size: em(17);
+      font-size: 17px;
     }
   }
 
   &__indicator {
     position: absolute;
     left: 50%;
-    bottom: em(50);
+    bottom: 50px;
     transform: translateX(-50%);
-    width: em(8);
-    height: em(8);
+    width: 8px;
+    height: 8px;
     background: $color-green;
     border-radius: 50%;
     box-shadow:
