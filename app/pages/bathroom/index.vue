@@ -1,10 +1,7 @@
 <template>
   <div class="page">
     <div class="page__top top">
-      <NuxtImg
-        class="top__img"
-        src="https://hips.hearstapps.com/hmg-prod/images/1737-q54a-jm-0403-lowres-designer-jennifer-mcgee-67dc655a1d1ac.jpg?crop=0.8886666666666666xw:1xh;center,top&resize=1200:*"
-      />
+      <NuxtImg class="top__img" src="/images/bathroom.jpg" />
     </div>
     <div class="page__devices-title">
       <Icon
@@ -111,6 +108,7 @@ const toggleDevice = (index: number) => {
 
 <style lang="scss" scoped>
 .page {
+  width: 100%;
   &__top {
     height: em(188);
     border-radius: em(12);
@@ -269,6 +267,7 @@ const toggleDevice = (index: number) => {
 .top {
   &__img {
     width: 100%;
+    height: 100%;
     object-fit: cover;
     opacity: 0.8;
   }

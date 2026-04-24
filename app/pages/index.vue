@@ -119,13 +119,13 @@ const weather: Weather = {
 const slides = ref<Slide[]>([
   {
     id: 1,
-    img: 'https://evolveartisanal.com/wp-content/uploads/2021/07/1_The-Wooden-Rhapsody-Modern-Bedroom-Interior-Design.jpg',
+    img: '/images/bedroom.jpg',
     routerLink: '/bedroom',
     title: 'bedroom'
   },
   {
     id: 2,
-    img: 'https://hips.hearstapps.com/hmg-prod/images/1737-q54a-jm-0403-lowres-designer-jennifer-mcgee-67dc655a1d1ac.jpg?crop=0.8886666666666666xw:1xh;center,top&resize=1200:*',
+    img: '/images/bathroom.jpg',
     routerLink: '/bathroom',
     title: 'bathroom'
   }
@@ -276,6 +276,7 @@ function slideNext() {
 
   &__img {
     border-radius: em(10);
+    object-fit: cover;
     width: 100%;
     height: em(250);
     margin-bottom: em(20);

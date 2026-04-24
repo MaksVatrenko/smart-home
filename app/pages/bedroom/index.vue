@@ -1,10 +1,7 @@
 <template>
   <div class="page">
     <div class="page__top top">
-      <NuxtImg
-        class="top__img"
-        src="https://evolveartisanal.com/wp-content/uploads/2021/07/1_The-Wooden-Rhapsody-Modern-Bedroom-Interior-Design.jpg"
-      />
+      <NuxtImg class="top__img" src="/images/bedroom.jpg" />
       <div class="top__live">
         <div
           class="top__indicator"
@@ -133,6 +130,7 @@ const toggleDevice = (index: number) => {
 
 <style lang="scss" scoped>
 .page {
+  width: 100%;
   &__top {
     height: em(188);
     border-radius: em(12);
@@ -292,6 +290,7 @@ const toggleDevice = (index: number) => {
 .top {
   &__img {
     width: 100%;
+    height: 100%;
     object-fit: cover;
     opacity: 0.8;
   }
