@@ -2,15 +2,36 @@
   <div class="page">
     <h1 class="page__title">{{ t('settings') }}</h1>
     <div class="page__item">
+      <Icon
+        class="page__icon page__icon--lang"
+        name="material-symbols-light:language"
+      />
       <span>{{ t('language') }}</span>
       <UiToggleSwitch v-model="isEnglish" class="page__toggle" />
+    </div>
+    <div class="page__item">
+      <Icon class="page__icon page__icon--tools" name="ri:tools-line" />
+      <span>
+        {{ t('service') }}
+      </span>
+      <UiToggleSwitchBase v-model="first" class="page__toggle" />
+    </div>
+    <div class="page__item">
+      <Icon
+        class="page__icon page__icon--shield"
+        name="material-symbols-light:shield-outline"
+      />
+      <span>{{ t('security') }}</span>
+      <UiToggleSwitchBase v-model="second" class="page__toggle" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { useSettingsStore } from '@/stores/settings'
 
+const settingsStore = useSettingsStore()
 const { locale, t } = useI18n()
 
 const isEnglish = computed({
@@ -18,6 +39,16 @@ const isEnglish = computed({
   set: (val: boolean) => {
     locale.value = val ? 'en' : 'ua'
   }
+})
+
+const first = computed({
+  get: () => settingsStore.isServiceMode,
+  set: (val: boolean) => (settingsStore.isServiceMode = val)
+})
+
+const second = computed({
+  get: () => settingsStore.isSecurityMode,
+  set: (val: boolean) => (settingsStore.isSecurityMode = val)
 })
 </script>
 
@@ -37,11 +68,26 @@ const isEnglish = computed({
 
   &__item {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: em(10);
     padding: em(15);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: em(12);
+    position: relative;
+  }
+
+  &__toggle {
+    margin-left: auto;
+  }
+
+  &__icon {
+    flex: 0 0 auto;
+    top: 0;
+    left: 0;
+    width: em(30);
+    height: em(30);
+    opacity: 0.5;
+    z-index: 0;
   }
 }
 </style>

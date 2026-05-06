@@ -37,5 +37,7 @@
   "devices": "Devices",
   "settings": "Settings",
   "home": "Home",
-  "language": "Language"
+  "language": "Language",
+  "security": "Security Mode",
+  "service": "Maintenance Mode"
 }
