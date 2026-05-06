@@ -7,38 +7,65 @@ export type DeviceName =
   | 'light'
   | 'exhaustFan'
   | 'boiler'
-type Room = 'bathroom' | 'bedroom'
 
-export type DeviceState = {
+type BaseDeviceState = {
   isActive: boolean
 }
 
-type DevicesStoreState = Record<Room, Record<DeviceName, DeviceState>>
+type DimmableDeviceState = BaseDeviceState & {
+  percentLight: number
+}
+
+export type BedroomDevices = {
+  bedLight: DimmableDeviceState
+  smartCam: BaseDeviceState
+  wifi: BaseDeviceState
+}
+
+export type BathroomDevices = {
+  light: DimmableDeviceState
+  exhaustFan: BaseDeviceState
+  boiler: BaseDeviceState
+}
+
+type DevicesStoreState = {
+  bedroom: BedroomDevices
+  bathroom: BathroomDevices
+}
 
 export const useDevicesStore = defineStore('devices', {
   state: (): DevicesStoreState => ({
     bedroom: {
-      bedLight: { isActive: false },
+      bedLight: { isActive: false, percentLight: 20 },
       smartCam: { isActive: false },
-      wifi: { isActive: false },
-      light: { isActive: false },
-      exhaustFan: { isActive: false },
-      boiler: { isActive: false }
+      wifi: { isActive: false }
     },
     bathroom: {
-      bedLight: { isActive: false },
-      smartCam: { isActive: false },
-      wifi: { isActive: false },
-      light: { isActive: false },
+      light: { isActive: false, percentLight: 20 },
       exhaustFan: { isActive: false },
       boiler: { isActive: false }
     }
   }),
 
   actions: {
-    toggleDevice(room: Room, deviceName: DeviceName) {
-      if (this[room] && this[room][deviceName]) {
-        this[room][deviceName].isActive = !this[room][deviceName].isActive
+    toggleDevice<
+      R extends keyof DevicesStoreState,
+      D extends keyof DevicesStoreState[R]
+    >(room: R, deviceName: D) {
+      const roomDevices = this.$state[room] as DevicesStoreState[R]
+      const device = roomDevices[deviceName] as BaseDeviceState
+      device.isActive = !device.isActive
+    },
+
+    setPercentLight<
+      R extends keyof DevicesStoreState,
+      D extends keyof DevicesStoreState[R]
+    >(room: R, deviceName: D, value: number) {
+      const roomDevices = this.$state[room] as DevicesStoreState[R]
+      const device = roomDevices[deviceName] as any
+
+      if (device && typeof device === 'object' && 'percentLight' in device) {
+        device.percentLight = value
       }
     }
   }

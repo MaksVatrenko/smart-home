@@ -9,6 +9,13 @@ $color-black-10: #16171b;
 $color-green: #15c55d;
 $color-red: #ff3b30;
 
+
+$color-accent: var(--color-accent);
+$color-bg: var(--color-bg);
+$color-text: var(--color-text);
+$color-green: var(--color-green);
+$color-red: var(--color-red);
+
 // # breakpoints
 $mobile: 767px;
 $tablet: 1279px;

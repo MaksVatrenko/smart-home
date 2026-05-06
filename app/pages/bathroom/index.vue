@@ -56,7 +56,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useACStore } from '@/stores/ac'
-import { useDevicesStore, type DeviceName } from '@/stores/devices'
+import {
+  useDevicesStore,
+  type DeviceName,
+  type BedroomDevices,
+  type BathroomDevices
+} from '@/stores/devices'
 import { useRoute } from 'vue-router'
 
 const acStore = useACStore()
@@ -80,17 +85,17 @@ const devices = computed<Device[]>(() => [
   {
     name: 'light',
     icon: 'lets-icons:lamp',
-    isActive: devicesStore[room.value].light.isActive
+    isActive: devicesStore.bathroom.light.isActive
   },
   {
     name: 'exhaustFan',
     icon: 'ph:fan-light',
-    isActive: devicesStore[room.value].exhaustFan.isActive
+    isActive: devicesStore.bathroom.exhaustFan.isActive
   },
   {
     name: 'boiler',
     icon: 'gg:smart-home-boiler',
-    isActive: devicesStore[room.value].boiler.isActive
+    isActive: devicesStore.bathroom.boiler.isActive
   }
 ])
 
@@ -100,8 +105,10 @@ const toggleDevice = (index: number) => {
 
   if (device.name === 'ac') {
     acStore.toggleAC(room.value)
-  } else {
-    devicesStore.toggleDevice(room.value, device.name as DeviceName)
+  } else if (room.value === 'bedroom') {
+    devicesStore.toggleDevice('bedroom', device.name as keyof BedroomDevices)
+  } else if (room.value === 'bathroom') {
+    devicesStore.toggleDevice('bathroom', device.name as keyof BathroomDevices)
   }
 }
 </script>

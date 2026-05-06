@@ -1,12 +1,20 @@
 <template>
   <div class="page">
     <div class="page__top top">
-      <NuxtImg class="top__img" src="/images/bedroom.jpg" />
+      <div
+        class="top__img-wrapper"
+        :style="{
+          '--lamp-opacity': bedLightOpacity
+        }"
+      >
+        <NuxtImg class="top__img" src="/images/bedroom.jpg" />
+      </div>
       <div class="top__live">
         <div
           class="top__indicator"
           :class="{
-            'top__indicator--disabled': !devicesStore[room].smartCam.isActive
+            'top__indicator--disabled':
+              room === 'bedroom' && !devicesStore.bedroom.smartCam.isActive
           }"
         />
         <span class="page__font page__font--live">Live</span>
@@ -43,6 +51,18 @@
         <span class="page__font page__font--device-name">
           {{ t(device.name) }}
         </span>
+        <UiBaseRangeSlider
+          v-if="device.isDimmable"
+          :model-value="getPercentLight(device.name as DeviceName)"
+          :min="0"
+          :max="100"
+          :step="5"
+          class="page__device-slider"
+          :class="{ 'page__device-slider--active': device.isActive }"
+          @update:model-value="
+            updatePercentLight(device.name as DeviceName, $event)
+          "
+        />
         <button
           class="page__device-btn"
           :class="{
@@ -71,7 +91,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useACStore } from '@/stores/ac'
-import { useDevicesStore, type DeviceName } from '@/stores/devices'
+import {
+  useDevicesStore,
+  type DeviceName,
+  type BedroomDevices,
+  type BathroomDevices
+} from '@/stores/devices'
 import { useRoute } from 'vue-router'
 
 const acStore = useACStore()
@@ -86,35 +111,60 @@ const room = computed(() => {
 const currentAC = computed(() => acStore[room.value])
 
 type Device = {
-  name: string
+  name: DeviceName | 'ac'
   icon: string
   isActive: boolean
   routePath?: string
+  isDimmable?: boolean
 }
 
-const devices = computed<Device[]>(() => [
-  {
-    name: 'bedLight',
-    icon: 'iconoir:small-lamp-alt',
-    isActive: devicesStore[room.value].bedLight.isActive
-  },
-  {
-    name: 'smartCam',
-    icon: 'material-symbols:android-camera-outline',
-    isActive: devicesStore[room.value].smartCam.isActive
-  },
-  {
-    name: 'ac',
-    icon: 'iconoir:air-conditioner',
-    isActive: currentAC.value.isActive,
-    routePath: `/${room.value}/ac`
-  },
-  {
-    name: 'wifi',
-    icon: 'material-symbols:android-wifi-3-bar',
-    isActive: devicesStore[room.value].wifi.isActive
+const devices = computed<Device[]>(() => {
+  if (room.value === 'bedroom') {
+    return [
+      {
+        name: 'bedLight',
+        isDimmable: true,
+        icon: 'iconoir:small-lamp-alt',
+        isActive: devicesStore.bedroom.bedLight.isActive
+      },
+      {
+        name: 'smartCam',
+        icon: 'material-symbols:android-camera-outline',
+        isActive: devicesStore.bedroom.smartCam.isActive
+      },
+      {
+        name: 'wifi',
+        icon: 'material-symbols:android-wifi-3-bar',
+        isActive: devicesStore.bedroom.wifi.isActive
+      },
+      {
+        name: 'ac',
+        icon: 'iconoir:air-conditioner',
+        isActive: currentAC.value.isActive,
+        routePath: `/${room.value}/ac`
+      }
+    ]
   }
-])
+
+  return [
+    {
+      name: 'light',
+      isDimmable: true,
+      icon: 'iconoir:light-bulb',
+      isActive: devicesStore.bathroom.light.isActive
+    },
+    {
+      name: 'exhaustFan',
+      icon: 'mdi:fan',
+      isActive: devicesStore.bathroom.exhaustFan.isActive
+    },
+    {
+      name: 'boiler',
+      icon: 'mdi:water-boiler',
+      isActive: devicesStore.bathroom.boiler.isActive
+    }
+  ]
+})
 
 const toggleDevice = (index: number) => {
   const device = devices.value[index]
@@ -122,9 +172,49 @@ const toggleDevice = (index: number) => {
 
   if (device.name === 'ac') {
     acStore.toggleAC(room.value)
-  } else {
-    devicesStore.toggleDevice(room.value, device.name as DeviceName)
+  } else if (room.value === 'bedroom') {
+    devicesStore.toggleDevice('bedroom', device.name as keyof BedroomDevices)
+  } else if (room.value === 'bathroom') {
+    devicesStore.toggleDevice('bathroom', device.name as keyof BathroomDevices)
   }
+}
+
+const bedLightOpacity = computed(() => {
+  const light = devicesStore.bedroom.bedLight
+
+  if (!light.isActive) return 0
+
+  return light.percentLight / 100
+})
+
+function updatePercentLight(deviceName: DeviceName, value: number) {
+  if (room.value === 'bedroom') {
+    devicesStore.setPercentLight(
+      'bedroom',
+      deviceName as keyof BedroomDevices,
+      value
+    )
+  } else if (room.value === 'bathroom') {
+    devicesStore.setPercentLight(
+      'bathroom',
+      deviceName as keyof BathroomDevices,
+      value
+    )
+  }
+}
+
+function getPercentLight(deviceName: DeviceName): number {
+  const roomValue = room.value
+  const state = devicesStore.$state[roomValue]
+
+  if (deviceName in state) {
+    const device = state[deviceName as keyof typeof state]
+    if (device && 'percentLight' in device) {
+      return (device as any).percentLight
+    }
+  }
+
+  return 0
 }
 </script>
 
@@ -153,6 +243,7 @@ const toggleDevice = (index: number) => {
     }
 
     &--device-name {
+      flex: 0 0 auto;
       font-size: em(12);
       font-weight: bold;
     }
@@ -189,9 +280,9 @@ const toggleDevice = (index: number) => {
   }
 
   &__devices-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: em(19);
+    display: flex;
+    flex-direction: column;
+    gap: em(20);
   }
 
   &__device {
@@ -200,7 +291,7 @@ const toggleDevice = (index: number) => {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: em(10);
+    gap: em(20);
     border: em(1) solid transparent;
     border-radius: em(12);
     background: linear-gradient(rgba(0, 0, 0, 0.31), rgba(0, 0, 0, 0.31))
@@ -247,7 +338,9 @@ const toggleDevice = (index: number) => {
   }
 
   &__device-btn {
-    position: relative;
+    position: absolute;
+    top: em(10);
+    right: em(16);
     overflow: hidden;
     background: linear-gradient(to right, #354269, #3b3163);
     width: em(32);
@@ -256,6 +349,7 @@ const toggleDevice = (index: number) => {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 0 0 auto;
     &::before {
       content: '';
       position: absolute;
@@ -282,17 +376,66 @@ const toggleDevice = (index: number) => {
     &--settings {
       position: absolute;
       top: em(10);
-      right: em(16);
+      right: em(56);
+    }
+  }
+
+  &__device-slider {
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+    &--active {
+      pointer-events: auto;
+      opacity: 1;
     }
   }
 }
 
 .top {
+  &__img-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: '';
+      width: em(100);
+      height: em(100);
+      position: absolute;
+      z-index: 1;
+      border-radius: 50%;
+      pointer-events: none;
+
+      background: radial-gradient(
+        circle,
+        rgba(255, 220, 120, 0.8) 0%,
+        rgba(255, 220, 120, 0.4) 30%,
+        rgba(255, 220, 120, 0.15) 55%,
+        rgba(255, 220, 120, 0.05) 70%,
+        rgba(255, 220, 120, 0) 100%
+      );
+
+      filter: blur(5px);
+      opacity: var(--lamp-opacity, 0.5);
+      transition: opacity 0.3s ease;
+    }
+
+    &::before {
+      top: em(20);
+      left: em(45);
+    }
+
+    &::after {
+      top: em(20);
+      right: em(40);
+    }
+  }
   &__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.8;
+    opacity: 0.5;
   }
 
   &__live {
