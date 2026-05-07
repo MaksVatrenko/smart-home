@@ -3,13 +3,29 @@
     <div class="page__top top">
       <div
         class="top__img-wrapper"
-        :style="{
-          '--lamp-opacity': lightOpacity
-        }"
+        :class="`top__img-wrapper--${room}`"
+        :style="{ '--lamp-opacity': lightOpacity }"
       >
-        <NuxtImg class="top__img" src="/images/bathroom.jpeg" />
+        <NuxtImg class="top__img" :src="roomConfig.image" />
       </div>
+
+      <template v-if="roomConfig.hasCamera">
+        <div class="top__live">
+          <div
+            class="top__indicator"
+            :class="{ 'top__indicator--disabled': !isCameraActive }"
+          />
+          <span class="page__font page__font--live">Live</span>
+        </div>
+        <div class="top__camera">
+          <Icon
+            class="page__icon page__icon--camera"
+            name="material-symbols:photo-camera-rounded"
+          />
+        </div>
+      </template>
     </div>
+
     <div class="page__devices-title">
       <Icon
         class="page__icon page__icon--devices"
@@ -19,14 +35,13 @@
         {{ t('devices') }}
       </span>
     </div>
+
     <div class="page__devices-list">
       <div
         v-for="(device, idx) in devices"
         :key="`${idx}${device.name}`"
         class="page__device"
-        :class="{
-          'page__device--disabled': !device.isActive
-        }"
+        :class="{ 'page__device--disabled': !device.isActive }"
       >
         <Icon
           :name="device.icon"
@@ -49,9 +64,7 @@
         />
         <button
           class="page__device-btn"
-          :class="{
-            'page__device-btn--active': device.isActive
-          }"
+          :class="{ 'page__device-btn--active': device.isActive }"
           type="button"
           @click="toggleDevice(idx)"
         >
@@ -83,25 +96,77 @@ import {
 } from '@/stores/devices'
 import { useRoute } from 'vue-router'
 
+// ─── Stores & helpers ────────────────────────────────────────────────────────
+
 const acStore = useACStore()
 const devicesStore = useDevicesStore()
 const { t } = useI18n()
 const route = useRoute()
+
+// ─── Room detection ───────────────────────────────────────────────────────────
 
 const room = computed(() => {
   const segments = route.path.split('/').filter(Boolean)
   return segments[0] as 'bathroom' | 'bedroom'
 })
 
+// ─── Room config ──────────────────────────────────────────────────────────────
+
+const ROOM_CONFIG = {
+  bedroom: {
+    image: '/images/bedroom.jpg',
+    hasCamera: true
+  },
+  bathroom: {
+    image: '/images/bathroom.jpeg',
+    hasCamera: false
+  }
+} as const
+
+const roomConfig = computed(() => ROOM_CONFIG[room.value])
+
+// ─── Camera state ─────────────────────────────────────────────────────────────
+
+const isCameraActive = computed(
+  () => room.value === 'bedroom' && devicesStore.bedroom.smartCam.isActive
+)
+
+// ─── Devices list ─────────────────────────────────────────────────────────────
+
 type Device = {
-  name: string
+  name: DeviceName | 'ac'
   icon: string
   isActive: boolean
   routePath?: string
   isDimmable?: boolean
 }
 
-const devices = computed<Device[]>(() => [
+const BEDROOM_DEVICES = (acIsActive: boolean, roomPath: string): Device[] => [
+  {
+    name: 'bedLight',
+    isDimmable: true,
+    icon: 'iconoir:small-lamp-alt',
+    isActive: devicesStore.bedroom.bedLight.isActive
+  },
+  {
+    name: 'smartCam',
+    icon: 'material-symbols:android-camera-outline',
+    isActive: devicesStore.bedroom.smartCam.isActive
+  },
+  {
+    name: 'wifi',
+    icon: 'material-symbols:android-wifi-3-bar',
+    isActive: devicesStore.bedroom.wifi.isActive
+  },
+  {
+    name: 'ac',
+    icon: 'iconoir:air-conditioner',
+    isActive: acIsActive,
+    routePath: `/${roomPath}/ac`
+  }
+]
+
+const BATHROOM_DEVICES = (): Device[] => [
   {
     name: 'light',
     isDimmable: true,
@@ -118,7 +183,16 @@ const devices = computed<Device[]>(() => [
     icon: 'mdi:water-boiler',
     isActive: devicesStore.bathroom.boiler.isActive
   }
-])
+]
+
+const devices = computed<Device[]>(() => {
+  if (room.value === 'bedroom') {
+    return BEDROOM_DEVICES(acStore.bedroom.isActive, room.value)
+  }
+  return BATHROOM_DEVICES()
+})
+
+// ─── Toggle ───────────────────────────────────────────────────────────────────
 
 const toggleDevice = (index: number) => {
   const device = devices.value[index]
@@ -128,18 +202,23 @@ const toggleDevice = (index: number) => {
     acStore.toggleAC(room.value)
   } else if (room.value === 'bedroom') {
     devicesStore.toggleDevice('bedroom', device.name as keyof BedroomDevices)
-  } else if (room.value === 'bathroom') {
+  } else {
     devicesStore.toggleDevice('bathroom', device.name as keyof BathroomDevices)
   }
 }
 
+// ─── Light opacity  ───────────────────────
+
 const lightOpacity = computed(() => {
-  const light = devicesStore.bathroom.light
+  const light =
+    room.value === 'bedroom'
+      ? devicesStore.bedroom.bedLight
+      : devicesStore.bathroom.light
 
-  if (!light.isActive) return 0
-
-  return light.percentLight / 100
+  return light.isActive ? light.percentLight / 100 : 0
 })
+
+// ─── Percent light ────────────────────────────────────────────────────────────
 
 function updatePercentLight(deviceName: DeviceName, value: number) {
   if (room.value === 'bedroom') {
@@ -148,7 +227,7 @@ function updatePercentLight(deviceName: DeviceName, value: number) {
       deviceName as keyof BedroomDevices,
       value
     )
-  } else if (room.value === 'bathroom') {
+  } else {
     devicesStore.setPercentLight(
       'bathroom',
       deviceName as keyof BathroomDevices,
@@ -158,13 +237,12 @@ function updatePercentLight(deviceName: DeviceName, value: number) {
 }
 
 function getPercentLight(deviceName: DeviceName): number {
-  const roomValue = room.value
-  const state = devicesStore.$state[roomValue]
+  const state = devicesStore.$state[room.value]
 
   if (deviceName in state) {
     const device = state[deviceName as keyof typeof state]
     if (device && 'percentLight' in device) {
-      return (device as any).percentLight
+      return (device as { percentLight: number }).percentLight
     }
   }
 
@@ -175,6 +253,7 @@ function getPercentLight(deviceName: DeviceName): number {
 <style lang="scss" scoped>
 .page {
   width: 100%;
+
   &__top {
     height: em(188);
     border-radius: em(12);
@@ -251,14 +330,13 @@ function getPercentLight(deviceName: DeviceName): number {
     background: linear-gradient(rgba(0, 0, 0, 0.31), rgba(0, 0, 0, 0.31))
       padding-box;
     padding: em(12) em(16);
-
     overflow: hidden;
+
     &::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: inherit;
-
       background:
         linear-gradient(rgba(0, 0, 0, 0.31), rgba(0, 0, 0, 0.31)) padding-box,
         linear-gradient(
@@ -268,7 +346,6 @@ function getPercentLight(deviceName: DeviceName): number {
           )
           border-box;
       opacity: 1;
-
       transition: opacity 0.3s ease;
       z-index: 0;
     }
@@ -278,6 +355,7 @@ function getPercentLight(deviceName: DeviceName): number {
       z-index: 1;
       transition: opacity 0.3s ease;
     }
+
     &--disabled {
       &::before {
         opacity: 0;
@@ -304,15 +382,14 @@ function getPercentLight(deviceName: DeviceName): number {
     align-items: center;
     justify-content: center;
     flex: 0 0 auto;
+
     &::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: inherit;
-
       background: linear-gradient(to right, #3161fe, #5a31fe);
       opacity: 0;
-
       transition: opacity 0.3s ease;
       z-index: 0;
     }
@@ -322,11 +399,13 @@ function getPercentLight(deviceName: DeviceName): number {
       z-index: 1;
       transition: opacity 0.3s ease;
     }
+
     &--active {
       &::before {
         opacity: 1;
       }
     }
+
     &--settings {
       position: absolute;
       top: em(10);
@@ -338,6 +417,7 @@ function getPercentLight(deviceName: DeviceName): number {
     pointer-events: none;
     opacity: 0.5;
     transition: opacity 0.3s ease;
+
     &--active {
       pointer-events: auto;
       opacity: 1;
@@ -351,46 +431,82 @@ function getPercentLight(deviceName: DeviceName): number {
     height: 100%;
     position: relative;
 
-    &::after,
-    &::before {
+    &::before,
+    &::after {
       content: '';
       position: absolute;
       z-index: 1;
       pointer-events: none;
-
-      filter: blur(10px);
       opacity: var(--lamp-opacity, 0.5);
       transition: opacity 0.3s ease;
     }
 
-    &::after {
-      background: radial-gradient(
-        circle,
-        rgba(255, 220, 120, 0.8) 0%,
-        rgba(255, 220, 120, 0.15) 80%,
-        rgba(255, 220, 120, 0) 100%
-      );
-      border-radius: em(100) 0 0 em(100);
-      width: em(300);
-      height: em(40);
-      top: em(85);
-      left: em(40);
+    &--bedroom {
+      &::before,
+      &::after {
+        width: em(100);
+        height: em(100);
+        border-radius: 50%;
+
+        background: radial-gradient(
+          circle,
+          rgba(255, 220, 120, 0.8) 0%,
+          rgba(255, 220, 120, 0.4) 30%,
+          rgba(255, 220, 120, 0.15) 55%,
+          rgba(255, 220, 120, 0.05) 70%,
+          rgba(255, 220, 120, 0) 100%
+        );
+
+        filter: blur(5px);
+      }
+
+      &::before {
+        top: em(20);
+        left: em(45);
+      }
+
+      &::after {
+        top: em(20);
+        right: em(40);
+      }
     }
 
-    &::before {
-      background: radial-gradient(
-        circle,
-        rgba(255, 220, 120, 0.8) 0%,
-        rgba(255, 220, 120, 0.6) 50%,
-        rgba(255, 220, 120, 0) 100%
-      );
-      border-radius: 0 0 em(50) em(50);
-      width: em(40);
-      height: em(20);
-      top: em(55);
-      left: em(0);
+    &--bathroom {
+      &::after,
+      &::before {
+        filter: blur(10px);
+      }
+
+      &::after {
+        background: radial-gradient(
+          circle,
+          rgba(255, 220, 120, 0.8) 0%,
+          rgba(255, 220, 120, 0.15) 80%,
+          rgba(255, 220, 120, 0) 100%
+        );
+        border-radius: em(100) 0 0 em(100);
+        width: em(300);
+        height: em(40);
+        top: em(85);
+        left: em(40);
+      }
+
+      &::before {
+        background: radial-gradient(
+          circle,
+          rgba(255, 220, 120, 0.8) 0%,
+          rgba(255, 220, 120, 0.6) 50%,
+          rgba(255, 220, 120, 0) 100%
+        );
+        border-radius: 0 0 em(50) em(50);
+        width: em(40);
+        height: em(20);
+        top: em(55);
+        left: em(0);
+      }
     }
   }
+
   &__img {
     width: 100%;
     height: 100%;
@@ -423,6 +539,7 @@ function getPercentLight(deviceName: DeviceName): number {
     transition:
       background 0.3s ease,
       box-shadow 0.3s ease;
+
     &--disabled {
       background: $color-red;
       box-shadow:
