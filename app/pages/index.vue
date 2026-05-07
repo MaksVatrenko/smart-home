@@ -125,7 +125,7 @@ const slides = ref<Slide[]>([
   },
   {
     id: 2,
-    img: '/images/bathroom.jpg',
+    img: '/images/bathroom.jpeg',
     routerLink: '/bathroom',
     title: 'bathroom'
   }

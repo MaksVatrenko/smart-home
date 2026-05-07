@@ -1,7 +1,14 @@
 <template>
   <div class="page">
     <div class="page__top top">
-      <NuxtImg class="top__img" src="/images/bathroom.jpg" />
+      <div
+        class="top__img-wrapper"
+        :style="{
+          '--lamp-opacity': lightOpacity
+        }"
+      >
+        <NuxtImg class="top__img" src="/images/bathroom.jpeg" />
+      </div>
     </div>
     <div class="page__devices-title">
       <Icon
@@ -28,6 +35,18 @@
         <span class="page__font page__font--device-name">
           {{ t(device.name) }}
         </span>
+        <UiBaseRangeSlider
+          v-if="device.isDimmable"
+          :model-value="getPercentLight(device.name as DeviceName)"
+          :min="0"
+          :max="100"
+          :step="5"
+          class="page__device-slider"
+          :class="{ 'page__device-slider--active': device.isActive }"
+          @update:model-value="
+            updatePercentLight(device.name as DeviceName, $event)
+          "
+        />
         <button
           class="page__device-btn"
           :class="{
@@ -79,22 +98,24 @@ type Device = {
   icon: string
   isActive: boolean
   routePath?: string
+  isDimmable?: boolean
 }
 
 const devices = computed<Device[]>(() => [
   {
     name: 'light',
-    icon: 'lets-icons:lamp',
+    isDimmable: true,
+    icon: 'iconoir:light-bulb',
     isActive: devicesStore.bathroom.light.isActive
   },
   {
     name: 'exhaustFan',
-    icon: 'ph:fan-light',
+    icon: 'mdi:fan',
     isActive: devicesStore.bathroom.exhaustFan.isActive
   },
   {
     name: 'boiler',
-    icon: 'gg:smart-home-boiler',
+    icon: 'mdi:water-boiler',
     isActive: devicesStore.bathroom.boiler.isActive
   }
 ])
@@ -110,6 +131,44 @@ const toggleDevice = (index: number) => {
   } else if (room.value === 'bathroom') {
     devicesStore.toggleDevice('bathroom', device.name as keyof BathroomDevices)
   }
+}
+
+const lightOpacity = computed(() => {
+  const light = devicesStore.bathroom.light
+
+  if (!light.isActive) return 0
+
+  return light.percentLight / 100
+})
+
+function updatePercentLight(deviceName: DeviceName, value: number) {
+  if (room.value === 'bedroom') {
+    devicesStore.setPercentLight(
+      'bedroom',
+      deviceName as keyof BedroomDevices,
+      value
+    )
+  } else if (room.value === 'bathroom') {
+    devicesStore.setPercentLight(
+      'bathroom',
+      deviceName as keyof BathroomDevices,
+      value
+    )
+  }
+}
+
+function getPercentLight(deviceName: DeviceName): number {
+  const roomValue = room.value
+  const state = devicesStore.$state[roomValue]
+
+  if (deviceName in state) {
+    const device = state[deviceName as keyof typeof state]
+    if (device && 'percentLight' in device) {
+      return (device as any).percentLight
+    }
+  }
+
+  return 0
 }
 </script>
 
@@ -138,6 +197,8 @@ const toggleDevice = (index: number) => {
     }
 
     &--device-name {
+      flex: 0 0 auto;
+      font-size: em(12);
       font-weight: bold;
     }
   }
@@ -173,9 +234,9 @@ const toggleDevice = (index: number) => {
   }
 
   &__devices-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: em(19);
+    display: flex;
+    flex-direction: column;
+    gap: em(20);
   }
 
   &__device {
@@ -184,7 +245,7 @@ const toggleDevice = (index: number) => {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: em(10);
+    gap: em(20);
     border: em(1) solid transparent;
     border-radius: em(12);
     background: linear-gradient(rgba(0, 0, 0, 0.31), rgba(0, 0, 0, 0.31))
@@ -231,7 +292,9 @@ const toggleDevice = (index: number) => {
   }
 
   &__device-btn {
-    position: relative;
+    position: absolute;
+    top: em(10);
+    right: em(16);
     overflow: hidden;
     background: linear-gradient(to right, #354269, #3b3163);
     width: em(32);
@@ -240,6 +303,7 @@ const toggleDevice = (index: number) => {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 0 0 auto;
     &::before {
       content: '';
       position: absolute;
@@ -266,17 +330,72 @@ const toggleDevice = (index: number) => {
     &--settings {
       position: absolute;
       top: em(10);
-      right: em(16);
+      right: em(56);
+    }
+  }
+
+  &__device-slider {
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+    &--active {
+      pointer-events: auto;
+      opacity: 1;
     }
   }
 }
 
 .top {
+  &__img-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    &::after,
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      pointer-events: none;
+
+      filter: blur(10px);
+      opacity: var(--lamp-opacity, 0.5);
+      transition: opacity 0.3s ease;
+    }
+
+    &::after {
+      background: radial-gradient(
+        circle,
+        rgba(255, 220, 120, 0.8) 0%,
+        rgba(255, 220, 120, 0.15) 80%,
+        rgba(255, 220, 120, 0) 100%
+      );
+      border-radius: em(100) 0 0 em(100);
+      width: em(300);
+      height: em(40);
+      top: em(85);
+      left: em(40);
+    }
+
+    &::before {
+      background: radial-gradient(
+        circle,
+        rgba(255, 220, 120, 0.8) 0%,
+        rgba(255, 220, 120, 0.6) 50%,
+        rgba(255, 220, 120, 0) 100%
+      );
+      border-radius: 0 0 em(50) em(50);
+      width: em(40);
+      height: em(20);
+      top: em(55);
+      left: em(0);
+    }
+  }
   &__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.8;
+    opacity: 0.7;
   }
 
   &__live {
