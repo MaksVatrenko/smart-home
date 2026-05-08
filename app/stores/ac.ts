@@ -9,7 +9,7 @@ export type ACState = {
   temperature: number
   mode: ACMode
 }
-type Room = 'bathroom' | 'bedroom'
+type Room = 'bathroom' | 'bedroom' | 'kitchen'
 type State = Record<Room, ACState>
 
 const initialACState = (temp = 18): ACState => ({
@@ -23,7 +23,8 @@ const initialACState = (temp = 18): ACState => ({
 export const useACStore = defineStore('ac', {
   state: (): State => ({
     bathroom: initialACState(18),
-    bedroom: initialACState(18)
+    bedroom: initialACState(18),
+    kitchen: initialACState(18)
   }),
 
   actions: {

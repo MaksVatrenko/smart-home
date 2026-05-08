@@ -7,6 +7,9 @@ export type DeviceName =
   | 'light'
   | 'exhaustFan'
   | 'boiler'
+  | 'kitchenLight'
+  | 'oven'
+  | 'hood'
 
 type BaseDeviceState = {
   isActive: boolean
@@ -28,9 +31,16 @@ export type BathroomDevices = {
   boiler: BaseDeviceState
 }
 
+export type KitchenDevices = {
+  kitchenLight: DimmableDeviceState
+  oven: BaseDeviceState
+  hood: BaseDeviceState
+}
+
 type DevicesStoreState = {
   bedroom: BedroomDevices
   bathroom: BathroomDevices
+  kitchen: KitchenDevices
 }
 
 export const useDevicesStore = defineStore('devices', {
@@ -44,6 +54,11 @@ export const useDevicesStore = defineStore('devices', {
       light: { isActive: false, percentLight: 20 },
       exhaustFan: { isActive: false },
       boiler: { isActive: false }
+    },
+    kitchen: {
+      kitchenLight: { isActive: false, percentLight: 20 },
+      oven: { isActive: false },
+      hood: { isActive: false }
     }
   }),
 

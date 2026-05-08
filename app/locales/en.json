@@ -39,5 +39,9 @@
   "home": "Home",
   "language": "Language",
   "security": "Security Mode",
-  "service": "Maintenance Mode"
+  "service": "Maintenance Mode",
+  "kitchenLight": "Kitchen Light",
+  "oven": "Oven",
+  "hood": "Hood",
+  "kitchen": "Kitchen"
 }

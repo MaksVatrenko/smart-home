@@ -92,7 +92,8 @@ import {
   useDevicesStore,
   type DeviceName,
   type BedroomDevices,
-  type BathroomDevices
+  type BathroomDevices,
+  type KitchenDevices
 } from '@/stores/devices'
 import { useRoute } from 'vue-router'
 
@@ -107,7 +108,7 @@ const route = useRoute()
 
 const room = computed(() => {
   const segments = route.path.split('/').filter(Boolean)
-  return segments[0] as 'bathroom' | 'bedroom'
+  return segments[0] as 'bathroom' | 'bedroom' | 'kitchen'
 })
 
 // ─── Room config ──────────────────────────────────────────────────────────────
@@ -119,6 +120,10 @@ const ROOM_CONFIG = {
   },
   bathroom: {
     image: '/images/bathroom.jpeg',
+    hasCamera: false
+  },
+  kitchen: {
+    image: '/images/kitchen.jpeg',
     hasCamera: false
   }
 } as const
@@ -185,10 +190,29 @@ const BATHROOM_DEVICES = (): Device[] => [
   }
 ]
 
-const devices = computed<Device[]>(() => {
-  if (room.value === 'bedroom') {
-    return BEDROOM_DEVICES(acStore.bedroom.isActive, room.value)
+const KITCHEN_DEVICES = (): Device[] => [
+  {
+    name: 'kitchenLight',
+    isDimmable: true,
+    icon: 'iconoir:light-bulb',
+    isActive: devicesStore.kitchen.kitchenLight.isActive
+  },
+  {
+    name: 'oven',
+    icon: 'mdi:stove',
+    isActive: devicesStore.kitchen.oven.isActive
+  },
+  {
+    name: 'hood',
+    icon: 'mdi:fan',
+    isActive: devicesStore.kitchen.hood.isActive
   }
+]
+
+const devices = computed<Device[]>(() => {
+  if (room.value === 'bedroom')
+    return BEDROOM_DEVICES(acStore.bedroom.isActive, room.value)
+  if (room.value === 'kitchen') return KITCHEN_DEVICES()
   return BATHROOM_DEVICES()
 })
 
@@ -202,8 +226,10 @@ const toggleDevice = (index: number) => {
     acStore.toggleAC(room.value)
   } else if (room.value === 'bedroom') {
     devicesStore.toggleDevice('bedroom', device.name as keyof BedroomDevices)
-  } else {
+  } else if (room.value === 'bathroom') {
     devicesStore.toggleDevice('bathroom', device.name as keyof BathroomDevices)
+  } else if (room.value === 'kitchen') {
+    devicesStore.toggleDevice('kitchen', device.name as keyof KitchenDevices)
   }
 }
 
@@ -213,7 +239,9 @@ const lightOpacity = computed(() => {
   const light =
     room.value === 'bedroom'
       ? devicesStore.bedroom.bedLight
-      : devicesStore.bathroom.light
+      : room.value === 'kitchen'
+        ? devicesStore.kitchen.kitchenLight
+        : devicesStore.bathroom.light
 
   return light.isActive ? light.percentLight / 100 : 0
 })
@@ -225,6 +253,12 @@ function updatePercentLight(deviceName: DeviceName, value: number) {
     devicesStore.setPercentLight(
       'bedroom',
       deviceName as keyof BedroomDevices,
+      value
+    )
+  } else if (room.value === 'kitchen') {
+    devicesStore.setPercentLight(
+      'kitchen',
+      deviceName as keyof KitchenDevices,
       value
     )
   } else {
@@ -503,6 +537,36 @@ function getPercentLight(deviceName: DeviceName): number {
         height: em(20);
         top: em(55);
         left: em(0);
+      }
+    }
+
+    &--kitchen {
+      &::after {
+        background: radial-gradient(
+          circle,
+          rgba(255, 220, 120, 0.8) 0%,
+          rgba(255, 220, 120, 0.15) 80%,
+          rgba(255, 220, 120, 0) 100%
+        );
+        width: em(200);
+        height: em(50);
+        top: em(20);
+        left: em(80);
+        filter: blur(8px);
+      }
+
+      &::before {
+        background: radial-gradient(
+          circle,
+          rgba(255, 220, 120, 0.8) 0%,
+          rgba(255, 220, 120, 0.15) 80%,
+          rgba(255, 220, 120, 0) 100%
+        );
+        width: em(100);
+        height: em(20);
+        top: em(20);
+        right: em(-30);
+        filter: blur(8px);
       }
     }
   }
