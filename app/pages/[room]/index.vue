@@ -48,7 +48,7 @@
           class="page__device-img page__icon page__icon--device"
         />
         <span class="page__font page__font--device-name">
-          {{ t(device.name) }}
+          {{ t(device.name as string) }}
         </span>
         <UiBaseRangeSlider
           v-if="device.isDimmable"
