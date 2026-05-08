@@ -19,25 +19,25 @@ type DimmableDeviceState = BaseDeviceState & {
   percentLight: number
 }
 
-export type BedroomDevices = {
+type BedroomDevices = {
   bedLight: DimmableDeviceState
   smartCam: BaseDeviceState
   wifi: BaseDeviceState
 }
 
-export type BathroomDevices = {
+type BathroomDevices = {
   light: DimmableDeviceState
   exhaustFan: BaseDeviceState
   boiler: BaseDeviceState
 }
 
-export type KitchenDevices = {
+type KitchenDevices = {
   kitchenLight: DimmableDeviceState
   oven: BaseDeviceState
   hood: BaseDeviceState
 }
 
-type DevicesStoreState = {
+export type DevicesStoreState = {
   bedroom: BedroomDevices
   bathroom: BathroomDevices
   kitchen: KitchenDevices

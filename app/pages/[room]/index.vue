@@ -91,9 +91,7 @@ import { useACStore } from '@/stores/ac'
 import {
   useDevicesStore,
   type DeviceName,
-  type BedroomDevices,
-  type BathroomDevices,
-  type KitchenDevices
+  type DevicesStoreState
 } from '@/stores/devices'
 import { useRoute } from 'vue-router'
 
@@ -224,50 +222,34 @@ const toggleDevice = (index: number) => {
 
   if (device.name === 'ac') {
     acStore.toggleAC(room.value)
-  } else if (room.value === 'bedroom') {
-    devicesStore.toggleDevice('bedroom', device.name as keyof BedroomDevices)
-  } else if (room.value === 'bathroom') {
-    devicesStore.toggleDevice('bathroom', device.name as keyof BathroomDevices)
-  } else if (room.value === 'kitchen') {
-    devicesStore.toggleDevice('kitchen', device.name as keyof KitchenDevices)
+  } else {
+    devicesStore.toggleDevice(
+      room.value,
+      device.name as keyof DevicesStoreState[typeof room.value]
+    )
   }
 }
 
 // ─── Light opacity  ───────────────────────
 
 const lightOpacity = computed(() => {
-  const light =
-    room.value === 'bedroom'
-      ? devicesStore.bedroom.bedLight
-      : room.value === 'kitchen'
-        ? devicesStore.kitchen.kitchenLight
-        : devicesStore.bathroom.light
+  const state = devicesStore.$state[room.value]
 
-  return light.isActive ? light.percentLight / 100 : 0
+  const dimmable = Object.values(state).find(
+    (d) => d && typeof d === 'object' && 'percentLight' in d
+  ) as { isActive: boolean; percentLight: number } | undefined
+
+  if (!dimmable || !dimmable.isActive) return 0
+  return dimmable.percentLight / 100
 })
-
 // ─── Percent light ────────────────────────────────────────────────────────────
 
 function updatePercentLight(deviceName: DeviceName, value: number) {
-  if (room.value === 'bedroom') {
-    devicesStore.setPercentLight(
-      'bedroom',
-      deviceName as keyof BedroomDevices,
-      value
-    )
-  } else if (room.value === 'kitchen') {
-    devicesStore.setPercentLight(
-      'kitchen',
-      deviceName as keyof KitchenDevices,
-      value
-    )
-  } else {
-    devicesStore.setPercentLight(
-      'bathroom',
-      deviceName as keyof BathroomDevices,
-      value
-    )
-  }
+  devicesStore.setPercentLight(
+    room.value,
+    deviceName as keyof DevicesStoreState[typeof room.value],
+    value
+  )
 }
 
 function getPercentLight(deviceName: DeviceName): number {
