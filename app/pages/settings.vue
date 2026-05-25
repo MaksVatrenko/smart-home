@@ -84,6 +84,7 @@ const second = computed({
   flex-direction: column;
   gap: em(20);
   width: 100%;
+  padding-top: em(20);
 
   &__title {
     font-size: em(24);
