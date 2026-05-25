@@ -78,7 +78,7 @@ const modalWrapper = ref(null)
     overflow: hidden;
     border: em(1) solid rgba(90, 51, 255, 0.42);
     border-radius: em(14);
-    width: 80%;
+    max-width: em($container-width);
     box-shadow:
       0 -7.7px 18px 0 rgba(0, 45, 78, 0.21),
       0 -7.7px 18px 0 rgba(0, 17, 41, 0.2),
