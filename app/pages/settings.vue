@@ -6,14 +6,26 @@
         class="page__icon page__icon--lang"
         name="material-symbols-light:language"
       />
-      <span>{{ t('language') }}</span>
+      <span class="page__font">{{ t('language') }}</span>
       <UiToggleSwitch v-model="isEnglish" class="page__toggle" />
     </div>
     <div class="page__item">
       <Icon class="page__icon page__icon--tools" name="ri:tools-line" />
-      <span>
+      <span class="page__font">
         {{ t('service') }}
       </span>
+      <button class="page__button" type="button">
+        <Icon
+          class="page__icon page__icon--tools"
+          name="material-symbols-light:info-outline-rounded"
+          @click="
+            messagesStore.openModal('InfoModal', {
+              title: 'service',
+              info: 'info_1'
+            })
+          "
+        />
+      </button>
       <UiToggleSwitchBase v-model="first" class="page__toggle" />
     </div>
     <div class="page__item">
@@ -21,7 +33,19 @@
         class="page__icon page__icon--shield"
         name="material-symbols-light:shield-outline"
       />
-      <span>{{ t('security') }}</span>
+      <span class="page__font">{{ t('security') }}</span>
+      <button class="page__button" type="button">
+        <Icon
+          class="page__icon page__icon--tools"
+          name="material-symbols-light:info-outline-rounded"
+          @click="
+            messagesStore.openModal('InfoModal', {
+              title: 'security',
+              info: 'info_2'
+            })
+          "
+        />
+      </button>
       <UiToggleSwitchBase v-model="second" class="page__toggle" />
     </div>
   </div>
@@ -30,7 +54,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useSettingsStore } from '@/stores/settings'
+import { useMessagesStore } from '@/stores/messages'
 
+const messagesStore = useMessagesStore()
 const settingsStore = useSettingsStore()
 const { locale, t } = useI18n()
 
@@ -54,7 +80,6 @@ const second = computed({
 
 <style lang="scss" scoped>
 .page {
-  padding: em(30);
   display: flex;
   flex-direction: column;
   gap: em(20);
@@ -69,7 +94,7 @@ const second = computed({
   &__item {
     display: flex;
     align-items: center;
-    gap: em(10);
+    gap: em(5);
     padding: em(15);
     background: rgba(255, 255, 255, 0.03);
     border-radius: em(12);
@@ -77,7 +102,11 @@ const second = computed({
   }
 
   &__toggle {
-    margin-left: auto;
+    flex: 0 0 auto;
+  }
+
+  &__font {
+    flex: 1 1 auto;
   }
 
   &__icon {

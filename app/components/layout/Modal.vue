@@ -17,7 +17,7 @@
           type="button"
           @click="messagesStore.finishModalAnimation()"
         >
-          <Icon class="modal__icon" name="i:cross" />
+          <Icon class="modal__icon" name="gridicons:cross" />
         </button>
 
         <component
@@ -76,10 +76,14 @@ const modalWrapper = ref(null)
     z-index: 2;
     height: auto;
     overflow: hidden;
-    background: $color-white;
-    border: em(2) solid $color-black;
+    border: em(1) solid rgba(90, 51, 255, 0.42);
     border-radius: em(14);
-    box-shadow: em(6) em(6) 0 0 $color-black;
+    width: 80%;
+    box-shadow:
+      0 -7.7px 18px 0 rgba(0, 45, 78, 0.21),
+      0 -7.7px 18px 0 rgba(0, 17, 41, 0.2),
+      41px -16px 108px 0 rgba(50, 97, 255, 0.51),
+      -55.72px -10px 101.07px 0 rgba(90, 51, 255, 0.42);
   }
 
   &__close {
@@ -87,19 +91,14 @@ const modalWrapper = ref(null)
     top: em(5);
     right: em(5);
     z-index: 100;
-    width: em(24);
-    height: em(24);
+    width: em(20);
+    height: em(20);
     background: transparent;
-
-    @media (max-width: $mobile) {
-      width: em(40);
-      height: em(40);
-    }
   }
 
   &__icon {
-    width: em(24);
-    height: em(24);
+    width: 100%;
+    height: 100%;
   }
 
   &__icon-mobile {
