@@ -18,7 +18,7 @@
                 class="footer__icon"
                 :name="item.icon"
               />
-              <span v-if="route.path === item.href">
+              <span v-if="route.path === item.href" class="footer__font">
                 {{ t(item.label) }}
               </span>
             </NuxtLink>
@@ -85,8 +85,13 @@ const navItems: NavItem[] = [
   }
 
   &__icon {
+    color: $color-footer-text;
     width: em(24);
     height: em(24);
+  }
+
+  &__font {
+    color: $color-footer-text;
   }
 
   &__nav-link {

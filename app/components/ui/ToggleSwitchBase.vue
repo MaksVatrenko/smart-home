@@ -45,7 +45,7 @@ function toggle() {
   height: em(30);
   padding: em(3);
   cursor: pointer;
-  background: rgba(35, 37, 50, 1);
+  background: var(--color-toggle-off);
   border: none;
   border-radius: em(30);
   transition: background 0.25s ease;
@@ -53,7 +53,7 @@ function toggle() {
   &__slider {
     width: em(24);
     height: em(24);
-    background: linear-gradient(to right, #354269, #3b3163);
+    background: var(--color-toggle-thumb-off);
     border-radius: 50%;
     box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
     transform: translateX(0);
@@ -61,8 +61,13 @@ function toggle() {
   }
 
   &--on {
+    background: linear-gradient(
+      to right,
+      var(--color-toggle-on-from),
+      var(--color-toggle-on-to)
+    );
     .toggle__slider {
-      background: linear-gradient(to right, #3161fe, #5a31fe);
+      background: var(--color-toggle-thumb-on);
       transform: translateX(em(20));
     }
   }

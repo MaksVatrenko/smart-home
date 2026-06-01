@@ -41,7 +41,7 @@
     border-radius: em(50) em(50) 0 0;
     border: 1px solid transparent;
     background:
-      linear-gradient($color-black-10, $color-black-10) padding-box,
+      linear-gradient($color-footer-bg, $color-footer-bg) padding-box,
       linear-gradient(180deg, rgba(191, 140, 255, 0.33), rgba(0, 0, 0, 0))
         border-box;
   }

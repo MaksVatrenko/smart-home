@@ -2,19 +2,109 @@
 $font-family: 'Inter';
 
 // # colors
-$color-accent: #ff6b6b;
-$color-white: #fff;
-$color-black: #000;
-$color-black-10: #16171b;
-$color-green: #15c55d;
-$color-red: #ff3b30;
+:root[data-theme='light'] {
+	--color-accent: #ff7b72;
+	
+	--color-text: #574a64;
+	--color-text-secondary: #6f7682;
+	
+	--color-surface: #ffffff;
+	--color-bg: #e8ecf0;
+	--color-bg-2: #dde2e8;
+	
+	--color-green: #15c55d;
+	--color-red: #ff3b30;
+	
+	--color-footer-bg: #1c1f26;
+	--color-footer-text: #e6e8eb;
+	
+	--color-toggle-off: #c5cad3;
+	--color-toggle-on-from: #5b6bff;
+	--color-toggle-on-to: #8b5cff;
+	--color-toggle-thumb-off: #ffffff;
+	--color-toggle-thumb-on: #ffffff;
+	
+	--color-weather-block-bg: rgba(0, 0, 0, 0.04);
+	--color-weather-block-border: rgba(191, 140, 255, 0.18);
+	
+	--color-device-bg: rgba(0, 0, 0, 0.06);
+	--color-device-border-from: rgba(0, 0, 0, 0.05);
+	--color-device-border-to: rgba(156, 140, 255, 0.2);
+	--color-device-icon: rgba(0, 0, 0, 0.15);
+	--color-btn-off-from: #c5cad3;
+	--color-btn-off-to: #a8adb8;
+	
+	--color-ac-circle-outer: #d0d5de;
+	--color-ac-circle-inner: #c8cdd8;
+	--color-ac-shadow: rgba(0, 0, 0, 0.1);
+}
 
+:root[data-theme='dark'] {
+	--color-accent: #ff7b72;
+	
+	--color-text: #e6e8eb;
+	--color-text-secondary: #a1a7b3;
+	
+	--color-surface: #22252c;
+	--color-bg: #181a20;
+	--color-bg-2: #22252c;
+	
+	--color-green: #15c55d;
+	--color-red: #ff3b30;
+	
+	--color-footer-bg: #1c1f26;
+	--color-footer-text: #e6e8eb;
+	
+	--color-toggle-off: #2e3340;
+	--color-toggle-on-from: #3161fe;
+	--color-toggle-on-to: #5a31fe;
+	--color-toggle-thumb-off: #354269;
+	--color-toggle-thumb-on: #ffffff;
+	
+	--color-weather-block-bg: rgba(0, 0, 0, 0.12);
+	--color-weather-block-border: rgba(191, 140, 255, 0.23);
+	
+	--color-device-bg: rgba(24, 26, 32, 0.41);
+	--color-device-border-from: rgba(255, 255, 255, 0.38);
+	--color-device-border-to: rgba(156, 140, 255, 0.84);
+	--color-device-icon: rgba(255, 255, 255, 0.31);
+	--color-btn-off-from: #354269;
+	--color-btn-off-to: #3b3163;
+	
+	--color-ac-circle-outer: #131a33;
+	--color-ac-circle-inner: #151d3c;
+	--color-ac-shadow: rgba(0, 0, 0, 0.85);
+}
 
+// SCSS aliases
 $color-accent: var(--color-accent);
 $color-bg: var(--color-bg);
+$color-bg-2: var(--color-bg-2);
+$color-bg-3: #181a20;
+$color-surface: var(--color-surface);
 $color-text: var(--color-text);
+$color-text-secondary: var(--color-text-secondary);
 $color-green: var(--color-green);
 $color-red: var(--color-red);
+$color-footer-bg: var(--color-footer-bg);
+$color-footer-text: var(--color-footer-text);
+$color-toggle: var(--color-toggle);
+$color-toggle-off: var(--color-toggle-off);
+$color-toggle-on-from: var(--color-toggle-on-from);
+$color-toggle-on-to: var(--color-toggle-on-to);
+$color-toggle-thumb-off: var(--color-toggle-thumb-off);
+$color-toggle-thumb-on: var(--color-toggle-thumb-on);
+$color-weather-block-bg: var(--color-weather-block-bg);
+$color-weather-block-border: var(--color-weather-block-border);
+$color-device-bg: var(--color-device-bg);
+$color-device-border-from: var(--color-device-border-from);
+$color-device-border-to: var(--color-device-border-to);
+$color-device-icon: var(--color-device-icon);
+$color-btn-off-from: var(--color-btn-off-from);
+$color-btn-off-to: var(--color-btn-off-to);
+$color-ac-circle-outer: var(--color-ac-circle-outer);
+$color-ac-circle-inner: var(color-ac-circle-inner);
+$color-ac-shadow: var(--color-ac-shadow);
 
 // # breakpoints
 $mobile: 767px;

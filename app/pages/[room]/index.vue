@@ -279,16 +279,16 @@ function getPercentLight(deviceName: DeviceName): number {
   }
 
   &__font {
+    color: $color-text;
     &--live {
+      color: #ffffff;
       font-size: em(14);
       text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.9);
     }
 
     &--title {
       font-size: em(14);
       font-weight: bold;
-      color: rgba(255, 255, 255, 0.85);
     }
 
     &--device-name {
@@ -299,7 +299,10 @@ function getPercentLight(deviceName: DeviceName): number {
   }
 
   &__icon {
+    color: $color-text;
+    transition: color 0.3s;
     &--camera {
+      color: #ffffff;
       width: em(20);
       height: em(20);
     }
@@ -310,9 +313,9 @@ function getPercentLight(deviceName: DeviceName): number {
     }
 
     &--device {
+      color: $color-device-icon;
       width: em(88);
       height: em(88);
-      color: rgba(255, 255, 255, 0.03);
     }
 
     &--power {
@@ -323,7 +326,7 @@ function getPercentLight(deviceName: DeviceName): number {
 
   &__devices-title {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     gap: em(8);
     margin-bottom: em(24);
   }
@@ -343,8 +346,7 @@ function getPercentLight(deviceName: DeviceName): number {
     gap: em(20);
     border: em(1) solid transparent;
     border-radius: em(12);
-    background: linear-gradient(rgba(0, 0, 0, 0.31), rgba(0, 0, 0, 0.31))
-      padding-box;
+    background: $color-device-bg padding-box;
     padding: em(12) em(16);
     overflow: hidden;
 
@@ -354,28 +356,36 @@ function getPercentLight(deviceName: DeviceName): number {
       inset: 0;
       border-radius: inherit;
       background:
-        linear-gradient(rgba(0, 0, 0, 0.31), rgba(0, 0, 0, 0.31)) padding-box,
+        linear-gradient(var(--color-device-bg), var(--color-device-bg))
+          padding-box,
         linear-gradient(
             to bottom,
-            rgba(255, 255, 255, 0.08),
-            rgba(156, 140, 255, 0.24)
+            rgba(255, 255, 255, 0.06),
+            rgba(156, 140, 255, 0.12)
           )
           border-box;
       opacity: 1;
+
       transition: opacity 0.3s ease;
       z-index: 0;
+    }
+
+    &:not(&--disabled)::before {
+      background:
+        linear-gradient(var(--color-device-bg), var(--color-device-bg))
+          padding-box,
+        linear-gradient(
+            to bottom,
+            var(--color-device-border-from),
+            var(--color-device-border-to)
+          )
+          border-box;
     }
 
     > * {
       position: relative;
       z-index: 1;
       transition: opacity 0.3s ease;
-    }
-
-    &--disabled {
-      &::before {
-        opacity: 0;
-      }
     }
   }
 
@@ -390,7 +400,11 @@ function getPercentLight(deviceName: DeviceName): number {
     top: em(10);
     right: em(16);
     overflow: hidden;
-    background: linear-gradient(to right, #354269, #3b3163);
+    background: linear-gradient(
+      to right,
+      $color-btn-off-from,
+      $color-btn-off-to
+    );
     width: em(32);
     height: em(32);
     border-radius: 50%;
@@ -417,6 +431,9 @@ function getPercentLight(deviceName: DeviceName): number {
     }
 
     &--active {
+      .page__icon--power {
+        color: #c5cad3;
+      }
       &::before {
         opacity: 1;
       }
@@ -557,7 +574,6 @@ function getPercentLight(deviceName: DeviceName): number {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.7;
   }
 
   &__live {
@@ -607,6 +623,11 @@ function getPercentLight(deviceName: DeviceName): number {
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(2px);
+    &--active {
+      .page__icon--camera {
+        color: $color-red;
+      }
+    }
   }
 }
 </style>

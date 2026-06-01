@@ -16,7 +16,16 @@
     <div class="page__weather weather">
       <div class="page__column page__column--center">
         <div class="weather__block">
-          <Icon class="weather__icon" :name="`noto:${weather.condition}`" />
+          <Icon
+            v-if="!globalStore.isLightTheme"
+            class="weather__icon"
+            :name="`noto:${weather.condition}`"
+          />
+          <Icon
+            v-else
+            class="weather__icon"
+            :name="`emojione-monotone:${weather.condition}`"
+          />
         </div>
         <span class="page__font page__font--weather">
           {{ t(`weather.${weather.condition}`) }}
@@ -46,7 +55,12 @@
       </div>
     </div>
     <div class="page__content">
-      <Icon class="page__icon" name="i:community"></Icon>
+      <div class="page__row">
+        <Icon class="page__icon" name="mingcute:home-3-line"></Icon>
+        <span class="page__font page__font--subtitle">
+          {{ t('rooms') }}
+        </span>
+      </div>
       <div class="page__swiper-container swiper">
         <button type="button" @click="slidePrev">
           <Icon
@@ -84,6 +98,9 @@
 import { useI18n } from 'vue-i18n'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
+import { useGlobalStore } from '@/stores/global'
+
+const globalStore = useGlobalStore()
 
 const { t } = useI18n()
 
@@ -114,7 +131,7 @@ const avatar = 'https://cdn-icons-png.flaticon.com/512/147/147285.png'
 const weather: Weather = {
   tempOutside: 28,
   tempIndoor: 18,
-  condition: 'cloud-with-rain'
+  condition: 'sun'
 }
 const slides = ref<Slide[]>([
   {
@@ -176,6 +193,13 @@ function slideNext() {
     }
   }
 
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: em(5);
+    margin-bottom: em(16);
+  }
+
   &__font {
     &--title {
       font-size: em(28);
@@ -188,7 +212,7 @@ function slideNext() {
     &--weather {
       font-size: em(12);
       font-weight: lighter;
-      color: rgba(#ffffff, 0.35);
+      color: rgba($color-text, 0.35);
     }
 
     &--temp {
@@ -200,7 +224,7 @@ function slideNext() {
       position: absolute;
       top: em(10);
       right: em(6);
-      color: rgba(#ffffff, 0.5);
+      color: rgba($color-text, 0.5);
       font-size: em(11);
     }
   }
@@ -209,9 +233,9 @@ function slideNext() {
     width: em(32);
     height: em(32);
     border-radius: 50%;
-    border: em(1) solid #ccc;
+    border: em(1) solid $color-text;
     overflow: hidden;
-    box-shadow: 0 4px 16px 3px rgba(#163b75, 0.7);
+    box-shadow: 0 4px 16px 3px rgba(0, 0, 0, 0.15);
   }
 
   &__avatar-image {
@@ -229,9 +253,9 @@ function slideNext() {
   }
 
   &__icon {
+    color: $color-text;
     width: em(24);
     height: em(24);
-    margin-bottom: em(16);
   }
 
   &__content {
@@ -254,8 +278,9 @@ function slideNext() {
     -webkit-backdrop-filter: blur(6px);
     border: em(1) solid transparent;
     background:
-      linear-gradient(rgba(#000000, 0.12), rgba(#000000, 0.12)) padding-box,
-      linear-gradient(180deg, rgba(191, 140, 255, 0.23), rgba(0, 0, 0, 0))
+      linear-gradient($color-weather-block-bg, $color-weather-block-bg)
+        padding-box,
+      linear-gradient(180deg, rgba(0, 0, 0, 0), $color-weather-block-border)
         border-box;
     display: flex;
     align-items: center;
@@ -263,17 +288,17 @@ function slideNext() {
   }
 
   &__icon {
-    width: em(50);
-    height: em(50);
+    width: em(40);
+    height: em(40);
   }
 }
 
 .swiper {
   &__item {
     padding: em(12) em(12) em(28);
-    background: rgba(255, 255, 255, 0.05);
+    background: $color-surface;
+    border: em(1) solid rgba(#9c8cff, 0.2);
     border-radius: em(12);
-    border: em(1) solid rgba(#9c8cff, 0.36);
     display: flex;
     flex-direction: column;
     width: 90%;

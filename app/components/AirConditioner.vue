@@ -223,7 +223,7 @@ const setMode = (mode: ACMode) => {
 
     &--subtitle {
       font-size: em(14);
-      color: rgba($color-white, 0.8);
+      color: rgba($color-text, 0.8);
       font-weight: 300;
     }
 
@@ -233,7 +233,7 @@ const setMode = (mode: ACMode) => {
     }
 
     &--block-1 {
-      color: rgba(255, 255, 255, 0.75);
+      color: $color-text-secondary;
       font-size: em(12);
     }
 
@@ -242,8 +242,9 @@ const setMode = (mode: ACMode) => {
     }
 
     &--block-3 {
-      color: rgba(255, 255, 255, 0.5);
+      color: $color-text-secondary;
       font-size: em(12);
+      opacity: 0.7;
     }
   }
 
@@ -255,7 +256,11 @@ const setMode = (mode: ACMode) => {
     align-items: center;
     justify-content: center;
 
-    background: linear-gradient(to right, #354269, #3b3163);
+    background: linear-gradient(
+      to right,
+      $color-btn-off-from,
+      $color-btn-off-to
+    );
 
     &::before {
       content: '';
@@ -295,12 +300,11 @@ const setMode = (mode: ACMode) => {
     }
 
     &--disabled {
-      background: linear-gradient(to right, #2c2c2c, #3b3b3b);
+      background: $color-toggle-off;
       pointer-events: none;
       > * {
         opacity: 0.5;
       }
-
       &::before {
         opacity: 0;
       }
@@ -308,6 +312,7 @@ const setMode = (mode: ACMode) => {
   }
 
   &__icon {
+    color: #ffffff;
     &--power {
       width: em(18);
       height: em(18);
@@ -328,11 +333,11 @@ const setMode = (mode: ACMode) => {
     border-radius: em(12);
     border: 1px solid transparent;
     background:
-      linear-gradient($color-black-10, $color-black-10) padding-box,
+      linear-gradient($color-bg, $color-bg) padding-box,
       linear-gradient(
           to bottom,
-          rgba(255, 255, 255, 0.08),
-          rgba(156, 140, 255, 0.24)
+          $color-device-border-from,
+          $color-device-border-to
         )
         border-box;
     overflow: hidden;
@@ -413,7 +418,7 @@ const setMode = (mode: ACMode) => {
   border-radius: 50%;
   &__stick {
     position: absolute;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.15);
 
     &:nth-child(1),
     &:nth-child(4) {
@@ -459,14 +464,14 @@ const setMode = (mode: ACMode) => {
     &:nth-child(5) {
       width: 190px;
       height: 190px;
-      background: linear-gradient(to bottom, #131a33, rgba(#131a33, 0.8));
+      background: $color-ac-circle-outer;
     }
 
     &:nth-child(6) {
       width: 130px;
       height: 130px;
-      background: rgba(21, 29, 60, 1);
-      box-shadow: 0 5.18px 15.55px 0 rgba(0, 0, 0, 0.85);
+      background: $color-ac-circle-inner;
+      box-shadow: 0 5.18px 15.55px 0 $color-ac-shadow;
     }
   }
 
@@ -487,7 +492,7 @@ const setMode = (mode: ACMode) => {
       position: absolute;
       top: em(-10);
       right: em(-16);
-      color: rgba(#ffffff, 0.5);
+      color: $color-text-secondary;
       font-size: 17px;
     }
   }
@@ -521,11 +526,11 @@ const setMode = (mode: ACMode) => {
 .block {
   border: 1px solid transparent;
   background:
-    linear-gradient($color-black, $color-black) padding-box,
+    linear-gradient($color-bg-2, $color-bg-2) padding-box,
     linear-gradient(
         to bottom,
-        rgba(255, 255, 255, 0.08),
-        rgba(156, 140, 255, 0.24)
+        $color-device-border-from,
+        $color-device-border-to
       )
       border-box;
   border-radius: em(12);

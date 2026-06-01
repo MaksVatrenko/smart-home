@@ -31,7 +31,7 @@ defineProps<{
 <style lang="scss" scoped>
 .modal {
   padding: em(30) em(15);
-  background: $color-black-10;
+  background: $color-bg;
   display: flex;
   flex-direction: column;
   gap: em(10);
@@ -43,7 +43,7 @@ defineProps<{
   }
 
   &__font {
-    color: $color-white;
+    color: $color-text;
     &--title {
       font-size: em(20);
     }

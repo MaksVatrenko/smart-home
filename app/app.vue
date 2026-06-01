@@ -1,19 +1,19 @@
 <template>
   <div id="app" class="app">
-    <!-- Accessibility route announcer for screen readers -->
     <NuxtRouteAnnouncer />
 
-    <!-- Global loading indicator -->
-    <!--    <NuxtLoadingIndicator :height="2" class="app__indicator" />-->
-
-    <!-- Main layout wrapper -->
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useGlobalStore } from './stores/global'
+
+const globalStore = useGlobalStore()
+globalStore.initTheme()
+</script>
 
 <style lang="scss">
 .app {

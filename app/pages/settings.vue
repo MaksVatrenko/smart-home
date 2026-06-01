@@ -10,6 +10,22 @@
       <UiToggleSwitch v-model="isEnglish" class="page__toggle" />
     </div>
     <div class="page__item">
+      <Icon
+        v-if="!globalStore.isLightTheme"
+        class="page__icon page__icon--lang"
+        name="line-md:moon-filled-alt-loop"
+      />
+      <Icon
+        v-else
+        class="page__icon page__icon--lang"
+        name="line-md:moon-filled-alt-to-sunny-filled-loop-transition"
+      />
+      <span class="page__font">Тема:</span>
+      <button class="theme-toggle" @click="globalStore.toggleTheme()">
+        {{ globalStore.isLightTheme ? 'Light' : 'Dark' }}
+      </button>
+    </div>
+    <div class="page__item">
       <Icon class="page__icon page__icon--tools" name="ri:tools-line" />
       <span class="page__font">
         {{ t('service') }}
@@ -55,7 +71,9 @@
 import { useI18n } from 'vue-i18n'
 import { useSettingsStore } from '@/stores/settings'
 import { useMessagesStore } from '@/stores/messages'
+import { useGlobalStore } from '@/stores/global'
 
+const globalStore = useGlobalStore()
 const messagesStore = useMessagesStore()
 const settingsStore = useSettingsStore()
 const { locale, t } = useI18n()
@@ -97,7 +115,7 @@ const second = computed({
     align-items: center;
     gap: em(5);
     padding: em(15);
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba($color-bg-2, 0.03);
     border-radius: em(12);
     position: relative;
   }

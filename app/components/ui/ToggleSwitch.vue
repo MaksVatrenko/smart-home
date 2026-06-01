@@ -30,7 +30,7 @@ function toggle() {
 </script>
 
 <style scoped lang="scss">
-$width: 86;
+$width: 72;
 
 .toggle {
   position: relative;
@@ -41,7 +41,7 @@ $width: 86;
   height: em(34);
   padding: 0 em(12);
   cursor: pointer;
-  background: $color-black-10;
+  background: var(--color-toggle-off);
   border: none;
   border-radius: em(20);
   box-shadow: 4px 4px 6px 0 rgb(0 35 104 / 19%);
@@ -50,9 +50,13 @@ $width: 86;
   &__slider {
     position: absolute;
     left: em(3);
-    width: em($width/2);
+    width: em(calc($width / 2));
     height: calc(100% - #{em(6)});
-    background: $color-black-10;
+    background: linear-gradient(
+      to right,
+      var(--color-toggle-on-from),
+      var(--color-toggle-on-to)
+    );
     border-radius: em(40);
     transition:
       transform 0.3s ease,
@@ -63,34 +67,31 @@ $width: 86;
     position: relative;
     z-index: 1;
     font-size: em(12);
-    color: $color-white;
+    color: var(--color-toggle-thumb-off);
     transition: color 0.3s ease;
   }
 
   &--on {
-    //    background: yellowgreen;
-
     .toggle__slider {
-      background: rgba(156, 140, 255, 0.24);
-      transform: translateX(em($width/2-6));
-    }
-
-    .toggle__text:first-child {
-      color: $color-white;
+      transform: translateX(em(calc($width / 2) - 6));
     }
 
     .toggle__text:last-child {
-      color: white;
+      color: var(--color-toggle-thumb-on);
+    }
+
+    .toggle__text:first-child {
+      color: $color-text-secondary;
     }
   }
 
   &:not(.toggle--on) {
     .toggle__text:first-child {
-      color: white;
+      color: var(--color-toggle-thumb-on);
     }
 
-    .toggle__slider {
-      background: rgba(156, 140, 255, 0.24);
+    .toggle__text:last-child {
+      color: $color-text-secondary;
     }
   }
 }

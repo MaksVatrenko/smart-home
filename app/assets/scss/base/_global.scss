@@ -12,6 +12,18 @@ html {
 body {
   font-family: $font-family;
   font-size: #{$font-size-default}px;
-  color: $color-white;
-  background: $color-black-10;
+  color: $color-text;
+  background: $color-bg;
+}
+
+*,
+*::before,
+*::after {
+  transition:
+    background-color 350ms ease,
+    color 350ms ease,
+    border-color 350ms ease,
+    box-shadow 350ms ease,
+    fill 350ms ease,
+    stroke 350ms ease;
 }
