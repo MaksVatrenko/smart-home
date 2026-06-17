@@ -63,7 +63,7 @@ export default defineNuxtConfig({
           content:
             'Smart Home — управління розумним будинком: освітлення, клімат, безпека та пристрої в одному інтерфейсі.'
         },
-        { property: 'og:image', content: '/og-image.jpg' },
+        { property: 'og:image', content: '/og-image.png' },
         {
           property: 'og:url',
           content: 'https://smarthomevatrenko.netlify.app'
@@ -80,7 +80,7 @@ export default defineNuxtConfig({
           content:
             'Smart Home — управління розумним будинком: освітлення, клімат, безпека та пристрої в одному інтерфейсі.'
         },
-        { name: 'twitter:image', content: '/og-image.jpg' },
+        { name: 'twitter:image', content: '/og-image.png' },
 
         // Technical
         { name: 'robots', content: 'index, follow' },
@@ -89,7 +89,7 @@ export default defineNuxtConfig({
         { 'http-equiv': 'x-content-type-options', content: 'nosniff' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
         { rel: 'canonical', href: 'https://smarthomevatrenko.netlify.app' }
       ]
     },
