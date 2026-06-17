@@ -95,6 +95,13 @@ import {
 } from '@/stores/devices'
 import { useRoute } from 'vue-router'
 
+// ─── Seo Head ────────────────────────────────────────────────────────
+
+useHead({
+  title: 'Bedroom',
+  meta: [{ name: 'description', content: 'Управління пристроями спальні' }]
+})
+
 // ─── Stores & helpers ────────────────────────────────────────────────────────
 
 const acStore = useACStore()

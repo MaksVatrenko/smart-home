@@ -37,9 +37,9 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'Welcome',
-      titleTemplate: '%s - Nuxt',
-      htmlAttrs: { lang: 'en' },
+      title: 'Smart Home',
+      titleTemplate: '%s | Smart Home',
+      htmlAttrs: { lang: 'uk' },
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -47,28 +47,52 @@ export default defineNuxtConfig({
         {
           name: 'description',
           content:
-            'A modern Nuxt 4 starter template with best practices and optimizations built-in'
+            'Smart Home — управління розумним будинком: освітлення, клімат, безпека та пристрої в одному інтерфейсі.'
         },
-        { name: 'theme-color', content: '#00DC82' },
+        { name: 'theme-color', content: '#16171b' },
+
+        // Open Graph
         { property: 'og:type', content: 'website' },
-        { property: 'og:title', content: 'Nuxt' },
+        { property: 'og:site_name', content: 'Smart Home' },
+        {
+          property: 'og:title',
+          content: 'Smart Home — управління розумним будинком'
+        },
         {
           property: 'og:description',
           content:
-            'A modern Nuxt 4 starter template with best practices and optimizations built-in'
+            'Smart Home — управління розумним будинком: освітлення, клімат, безпека та пристрої в одному інтерфейсі.'
         },
         { property: 'og:image', content: '/og-image.jpg' },
-        // Disable service worker
+        {
+          property: 'og:url',
+          content: 'https://smarthomevatrenko.netlify.app'
+        },
+
+        // Twitter Card
+        { name: 'twitter:card', content: 'summary_large_image' },
+        {
+          name: 'twitter:title',
+          content: 'Smart Home — управління розумним будинком'
+        },
+        {
+          name: 'twitter:description',
+          content:
+            'Smart Home — управління розумним будинком: освітлення, клімат, безпека та пристрої в одному інтерфейсі.'
+        },
+        { name: 'twitter:image', content: '/og-image.jpg' },
+
+        // Technical
+        { name: 'robots', content: 'index, follow' },
         { name: 'msapplication-config', content: 'none' },
         { name: 'apple-mobile-web-app-capable', content: 'no' },
         { 'http-equiv': 'x-content-type-options', content: 'nosniff' }
       ],
       link: [
-        // { rel: 'icon', type: 'image/png', href: '/favicon.png' },
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'canonical', href: 'https://smarthomevatrenko.netlify.app' }
       ]
     },
-    // Enable transitions
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },
     keepalive: false,
