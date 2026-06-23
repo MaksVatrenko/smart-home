@@ -10,9 +10,16 @@
 
 <script setup lang="ts">
 import { useGlobalStore } from './stores/global'
+import { useAuthStore } from './stores/auth'
 
 const globalStore = useGlobalStore()
+const authStore = useAuthStore()
+
 globalStore.initTheme()
+
+onMounted(() => {
+  authStore.restoreSession()
+})
 </script>
 
 <style lang="scss">

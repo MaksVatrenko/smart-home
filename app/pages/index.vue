@@ -9,8 +9,12 @@
           {{ t('welcome') }}
         </span>
       </div>
-      <div class="page__avatar">
-        <img class="page__avatar-image" :src="avatar" alt="User Avatar" />
+      <div class="page__avatar" @click="messagesStore.openModal('AvatarModal')">
+        <img
+          class="page__avatar-image"
+          :src="authStore.avatar"
+          alt="User Avatar"
+        />
       </div>
     </div>
     <div class="page__weather weather">
@@ -95,12 +99,15 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ middleware: 'auth' })
-
 import { useI18n } from 'vue-i18n'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import { useGlobalStore } from '@/stores/global'
+
+import { useAuthStore } from '@/stores/auth'
+import { useMessagesStore } from '@/stores/messages'
+
+definePageMeta({ middleware: 'auth' })
 
 const globalStore = useGlobalStore()
 
@@ -126,11 +133,9 @@ type Slide = {
   routerLink: string
   title: string
 }
-
-import { useAuthStore } from '@/stores/auth'
 const authStore = useAuthStore()
+const messagesStore = useMessagesStore()
 const name = computed(() => authStore.user?.name ?? '')
-const avatar = 'https://cdn-icons-png.flaticon.com/512/147/147285.png'
 
 const weather: Weather = {
   tempOutside: 28,
@@ -240,6 +245,12 @@ function slideNext() {
     border: em(1) solid $color-text;
     overflow: hidden;
     box-shadow: 0 4px 16px 3px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 
   &__avatar-image {

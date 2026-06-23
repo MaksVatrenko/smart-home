@@ -60,6 +60,8 @@
     "minPassword": "Minimum 6 characters",
     "invalidCredentials": "Invalid email or password",
     "emailTaken": "A user with this email already exists",
-    "logout": "Sign Out"
+    "logout": "Sign Out",
+    "uploadAvatar": "Upload photo",
+    "saveAvatar": "Save"
   }
 }

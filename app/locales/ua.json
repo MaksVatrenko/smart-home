@@ -59,6 +59,8 @@
     "minPassword": "Мінімум 6 символів",
     "invalidCredentials": "Невірний email або пароль",
     "emailTaken": "Користувач з таким email вже існує",
-    "logout": "Вийти з акаунту"
+    "logout": "Вийти з акаунту",
+    "uploadAvatar": "Завантажити фото",
+    "saveAvatar": "Зберегти"
   }
 }

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 
 const STORAGE_KEY = 'smarthome_auth'
 const USERS_KEY = 'smarthome_users'
+const AVATAR_KEY = 'smarthome_avatar'
 
 type StoredUser = { name: string; email: string; password: string }
 
@@ -21,7 +22,10 @@ function saveUsers(users: StoredUser[]): void {
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null as { name: string; email: string } | null,
-    isAuthenticated: false
+    isAuthenticated: false,
+    avatar: import.meta.client
+      ? (localStorage.getItem(AVATAR_KEY) ?? 'https://cdn-icons-png.flaticon.com/512/147/147285.png')
+      : 'https://cdn-icons-png.flaticon.com/512/147/147285.png'
   }),
 
   actions: {
@@ -51,8 +55,17 @@ export const useAuthStore = defineStore('auth', {
     logout(): void {
       this.user = null
       this.isAuthenticated = false
-      if (process.client) localStorage.removeItem(STORAGE_KEY)
+      if (process.client) {
+        localStorage.removeItem(STORAGE_KEY)
+        localStorage.removeItem(AVATAR_KEY)
+      }
+      this.avatar = 'https://cdn-icons-png.flaticon.com/512/147/147285.png'
       navigateTo('/login')
+    },
+
+    setAvatar(dataUrl: string): void {
+      this.avatar = dataUrl
+      if (process.client) localStorage.setItem(AVATAR_KEY, dataUrl)
     },
 
     restoreSession(): void {
@@ -66,6 +79,8 @@ export const useAuthStore = defineStore('auth', {
           localStorage.removeItem(STORAGE_KEY)
         }
       }
+      const savedAvatar = localStorage.getItem(AVATAR_KEY)
+      if (savedAvatar) this.avatar = savedAvatar
     }
   }
 })
