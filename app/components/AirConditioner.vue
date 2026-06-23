@@ -545,6 +545,7 @@ const setMode = (mode: ACMode) => {
 
   &--column {
     flex-direction: column;
+    justify-content: space-between;
     gap: em(12);
   }
 
