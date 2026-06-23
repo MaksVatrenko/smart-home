@@ -113,7 +113,7 @@ const modalWrapper = ref(null)
 
   &__component {
     max-height: 90vh;
-    overflow: scroll;
+    overflow: auto;
     transition: 250ms;
 
     &--loading {

@@ -110,7 +110,7 @@
       <div class="conditioner__block block block--row">
         <div class="block__column">
           <span class="conditioner__font conditioner__font--block-2">
-            {{ t('fan') }}
+            {{ t('eco') }}
           </span>
           <span class="conditioner__font conditioner__font--block-3">
             {{ fanIsActive ? t('on') : t('off') }}
@@ -121,7 +121,7 @@
       <div class="conditioner__block block block--row">
         <div class="block__column">
           <span class="conditioner__font conditioner__font--block-2">
-            {{ t('cooler') }}
+            {{ t('turbo') }}
           </span>
           <span class="conditioner__font conditioner__font--block-3">
             {{ coolerIsActive ? t('on') : t('off') }}
