@@ -127,7 +127,9 @@ type Slide = {
   title: string
 }
 
-const name = 'Alina'
+import { useAuthStore } from '@/stores/auth'
+const authStore = useAuthStore()
+const name = computed(() => authStore.user?.name ?? '')
 const avatar = 'https://cdn-icons-png.flaticon.com/512/147/147285.png'
 
 const weather: Weather = {
