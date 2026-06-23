@@ -64,18 +64,26 @@
       </button>
       <UiToggleSwitchBase v-model="second" class="page__toggle" />
     </div>
+    <button class="page__logout" type="button" @click="authStore.logout()">
+      <Icon class="page__logout-icon" name="material-symbols-light:logout-rounded" />
+      {{ t('auth.logout') }}
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
+definePageMeta({ middleware: 'auth' })
+
 import { useI18n } from 'vue-i18n'
 import { useSettingsStore } from '@/stores/settings'
 import { useMessagesStore } from '@/stores/messages'
 import { useGlobalStore } from '@/stores/global'
+import { useAuthStore } from '@/stores/auth'
 
 const globalStore = useGlobalStore()
 const messagesStore = useMessagesStore()
 const settingsStore = useSettingsStore()
+const authStore = useAuthStore()
 const { locale, t } = useI18n()
 
 const isEnglish = computed({
@@ -136,6 +144,32 @@ const second = computed({
     height: em(30);
     opacity: 0.5;
     z-index: 0;
+  }
+
+  &__logout {
+    display: flex;
+    align-items: center;
+    gap: em(8);
+    padding: em(14) em(20);
+    margin-top: em(10);
+    font-size: em(15);
+    font-weight: 600;
+    color: $color-red;
+    cursor: pointer;
+    background: rgba($color-red, 0.08);
+    border: 1px solid rgba($color-red, 0.25);
+    border-radius: em(12);
+    transition: background 0.2s;
+    width: 100%;
+
+    &:hover {
+      background: rgba($color-red, 0.15);
+    }
+  }
+
+  &__logout-icon {
+    width: em(22);
+    height: em(22);
   }
 }
 </style>

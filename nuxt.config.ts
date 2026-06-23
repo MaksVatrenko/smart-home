@@ -40,6 +40,12 @@ export default defineNuxtConfig({
       title: 'Smart Home',
       titleTemplate: '%s | Smart Home',
       htmlAttrs: { lang: 'uk' },
+      script: [
+        {
+          innerHTML: `(function(){var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')})()`,
+          tagPosition: 'head'
+        }
+      ],
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },

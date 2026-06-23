@@ -48,5 +48,18 @@
   "info_2": "Security mode activates enhanced access control: locks doors, enables motion sensors and cameras, and restricts device management for unauthorized users. Recommended when leaving home or at night.",
   "rooms": "Rooms",
   "dark_theme": "Dark",
-  "light_theme": "Light"
+  "light_theme": "Light",
+  "auth": {
+    "title": "Smart Home",
+    "login": "Sign In",
+    "register": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "required": "Field is required",
+    "minPassword": "Minimum 6 characters",
+    "invalidCredentials": "Invalid email or password",
+    "emailTaken": "A user with this email already exists",
+    "logout": "Sign Out"
+  }
 }

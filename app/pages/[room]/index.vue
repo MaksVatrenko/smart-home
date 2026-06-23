@@ -86,6 +86,8 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({ middleware: 'auth' })
+
 import { useI18n } from 'vue-i18n'
 import { useACStore } from '@/stores/ac'
 import {

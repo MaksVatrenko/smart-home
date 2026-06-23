@@ -5,7 +5,9 @@ export const useGlobalStore = defineStore('global', {
     currentTime: Date.now(),
     isScrollLock: false,
     pageAnimation: '',
-    isLightTheme: true
+    isLightTheme: import.meta.client
+      ? localStorage.getItem('theme') === 'light'
+      : false
   }),
 
   actions: {

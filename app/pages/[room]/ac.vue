@@ -5,6 +5,8 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({ middleware: 'auth' })
+
 import AirConditioner from '~/components/AirConditioner.vue'
 import { useRoute } from 'vue-router'
 

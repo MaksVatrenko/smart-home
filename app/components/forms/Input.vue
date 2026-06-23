@@ -45,30 +45,33 @@ const emit = defineEmits(['update:modelValue'])
 .input {
   display: flex;
   flex-direction: column;
-  gap: em(4);
+  gap: em(6);
 
   &__label {
     display: block;
-    font-weight: bold;
-    color: darkgrey;
+    font-size: em(13);
+    font-weight: 600;
+    color: $color-text-secondary;
   }
 
   &__field {
     width: 100%;
-    padding: em(5) em(10);
-    color: black;
-    background-color: white;
-    border: 1px solid grey;
+    padding: em(12) em(14);
+    font-size: em(14);
+    color: $color-text;
+    background-color: $color-bg;
+    border: 1px solid rgba($color-text, 0.12);
     border-radius: em(10);
-    transition: border-color 0.3s;
+    transition: border-color 0.2s;
 
     &::placeholder {
-      color: grey;
+      color: $color-text-secondary;
+      opacity: 0.6;
     }
 
     &:focus {
       outline: none;
-      border-color: blue;
+      border-color: rgba(91, 107, 255, 0.7);
     }
   }
 }

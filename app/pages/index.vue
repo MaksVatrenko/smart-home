@@ -95,6 +95,8 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({ middleware: 'auth' })
+
 import { useI18n } from 'vue-i18n'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
@@ -250,6 +252,7 @@ function slideNext() {
     align-items: center;
     justify-content: center;
     gap: em(40);
+    width: 100%;
   }
 
   &__icon {
