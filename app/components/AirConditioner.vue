@@ -73,7 +73,9 @@
           {{ t('tempIndoor') }}
         </span>
         <span>
-          <span class="conditioner__font conditioner__font--block-2">18</span>
+          <span class="conditioner__font conditioner__font--block-2">
+            {{ '18 ' }}
+          </span>
           <span class="conditioner__font conditioner__font--block-3">
             &#8451;
           </span>
@@ -84,7 +86,9 @@
           {{ t('tempOut') }}
         </span>
         <span>
-          <span class="conditioner__font conditioner__font--block-2">30</span>
+          <span class="conditioner__font conditioner__font--block-2">
+            {{ '28 ' }}
+          </span>
           <span class="conditioner__font conditioner__font--block-3">
             &#8451;
           </span>
@@ -95,7 +99,9 @@
           {{ t('windSpeed') }}
         </span>
         <span>
-          <span class="conditioner__font conditioner__font--block-2">2</span>
+          <span class="conditioner__font conditioner__font--block-2">
+            {{ '2 ' }}
+          </span>
           <span class="conditioner__font conditioner__font--block-3">
             {{ t('grade') }}
           </span>

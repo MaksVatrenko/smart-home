@@ -18,8 +18,8 @@
   "tempIndoor": "Temp Indoor",
   "tempOut": "Temp Out",
   "windSpeed": "Wind speed",
-  "fan": "fan",
-  "cooler": "Cooler",
+  "eco": "Eco",
+  "turbo": "Turbo",
   "grade": "Grade",
   "bedLight": "Bed Light",
   "smartCam": "Smart cam",
@@ -46,5 +46,7 @@
   "kitchen": "Kitchen",
   "info_1": "Maintenance mode temporarily disables automations and scenarios across the entire home. Devices remain manually controllable but will not respond to schedules or triggers. Use during servicing, updates, or system configuration.",
   "info_2": "Security mode activates enhanced access control: locks doors, enables motion sensors and cameras, and restricts device management for unauthorized users. Recommended when leaving home or at night.",
-  "rooms": "Rooms"
+  "rooms": "Rooms",
+  "dark_theme": "Dark",
+  "light_theme": "Light"
 }

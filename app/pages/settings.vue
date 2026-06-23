@@ -22,7 +22,7 @@
       />
       <span class="page__font">Тема:</span>
       <button class="theme-toggle" @click="globalStore.toggleTheme()">
-        {{ globalStore.isLightTheme ? 'Light' : 'Dark' }}
+        {{ globalStore.isLightTheme ? t('light_theme') : t('dark_theme') }}
       </button>
     </div>
     <div class="page__item">
