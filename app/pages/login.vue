@@ -45,11 +45,10 @@ const activeTab = ref<'login' | 'register'>('login')
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: em(20);
 
   &__card {
     width: 100%;
-    max-width: em(400);
+    max-width: em(440);
     padding: em(26) em(28);
     background: $color-bg-2;
     border: em(1) solid rgba(90, 51, 255, 0.42);
